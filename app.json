@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "btg-new-rn-app",
+    "slug": "btg-new-rn-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin"
+      ]
+    ],
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "simulator": true,
+      "bundleIdentifier": "com.bilalwarind.btgnewrnapp",
+      "development": {
+        "developmentClient": true,
+        "distribution": "internal"
+      },
+      "distribution": "internal"
+    },
+   
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.bilalwarind.btgnewrnapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "99f6ba40-813c-4dbf-82a6-2370bf9d421d"
+      }
+    }
+  }
+}

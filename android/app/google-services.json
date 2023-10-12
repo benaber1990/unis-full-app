@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "500039576121",
+    "project_id": "unis-1",
+    "storage_bucket": "unis-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500039576121:android:4def0975325aa3e54fbbe8",
+        "android_client_info": {
+          "package_name": "com.bilalwarind.btgnewrnapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500039576121-2ht2n7jk53d7cicusekhrludk1gipj9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bilalwarind.btgnewrnapp",
+            "certificate_hash": "b6b924b6b5ab7c3dd2906a79e6a1b8bec21e7595"
+          }
+        },
+        {
+          "client_id": "500039576121-gt5r2r8dmpaspoeg8nee0ci7ml02spa9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bilalwarind.btgnewrnapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "500039576121-j46pleau65gc22mn0id3ieudrdumbc7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX7lLV-Yo0LYo8WIoWLKe2VUWPTI6LmQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500039576121-j46pleau65gc22mn0id3ieudrdumbc7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

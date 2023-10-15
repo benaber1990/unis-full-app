@@ -14,6 +14,7 @@ import {
   Image,
   SafeAreaView,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Foundation } from "@expo/vector-icons";
@@ -23,12 +24,15 @@ import HomeListItem from "../components/HomeListItem";
 import LATEST_NEWS_DATA from "../misc/LATEST_NEWS_DATA";
 import { useNavigation } from "@react-navigation/native";
 import firebase from "firebase/compat";
-
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 // import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import "firebase/auth";
 import AuthUserContext from "../components/AuthUserContext";
 import AppContext from "../components/AppContext";
+import UnisLogo from "../components/UnisLogo";
+import HomeItemBox from "../miscComps/HomeItemBox";
+import TextCardComp from "../miscComps/TextCardComp";
 
 //FIREBASE CONFIG
 const firebaseConfig = {
@@ -110,90 +114,35 @@ function HomeScreen({ navigation }) {
 
   const [testData, setTestData] = useState("");
 
-  // Home Card Container
-  function HomeCard() {
-    return (
-      <View style={styles.homeCardContainer}>
-        <View>
-          <HomeListItem
-            iconName="md-duplicate-outline"
-            title="Add New Certificate"
-            onPress={() => navigation.navigate("AddNewDoc")}
-          />
-          <HomeListItem
-            iconName="card-outline"
-            title="View All My Cards"
-            onPress={() => navigation.navigate("AllCards")}
-            // onPress={onPress}
-          />
-        </View>
-        <View>
-          <HomeListItem
-            iconName="person-circle"
-            title="Update My Profile"
-            onPress={() => navigation.navigate("UpdateProfile")}
-          />
-          <HomeListItem
-            iconName="md-share-social-outline"
-            title="Share My Profile"
-            onPress={() => navigation.navigate("QR")}
-          />
-        </View>
-      </View>
-    );
-  }
-
-  // Search Box
-
   // FlatList
   const Item = ({ title, imageLink }) => (
     <Pressable
       onPress={() => navigation.navigate("ContentDisplay")}
-      style={styles.itemStyle}
+      style={{ marginBottom: 20 }}
     >
-      <View>
+      <View style={styles.itemStyle}>
         <Image
           source={{ uri: imageLink }}
           style={{
-            height: 200,
-            width: 125,
-            borderTopLeftRadius: 8,
-            borderBottomLeftRadius: 8,
+            height: 220,
+            width: 220,
+            borderRadius: 12,
           }}
         />
       </View>
       <View
         style={{
-          justifyContent: "center",
-          paddingLeft: 20,
-          paddingRight: 30,
-          width: 150,
+          backgroundColor: COLORS.grey,
+          alignSelf: "center",
+          borderWidth: 2,
+          borderColor: COLORS.lightGreen,
+          paddingVertical: 8,
+          paddingHorizontal: 12,
+          marginTop: -20,
+          borderRadius: 4,
         }}
       >
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
-          {title}
-        </Text>
-        <Text
-          style={{
-            marginTop: 5,
-            color: "#fdfdfd",
-            // fontSize: 16,
-          }}
-        >
-          Post excerpt can be displayed here
-        </Text>
-        <View
-          style={{
-            backgroundColor: COLORS.yellow,
-            paddingHorizontal: 5,
-            paddingVertical: 5,
-            borderRadius: 2,
-            alignSelf: "flex-start",
-            marginTop: 10,
-          }}
-        >
-          <Text style={{ fontWeight: "500" }}>Read More</Text>
-        </View>
+        <Text style={{ color: "white", fontWeight: "600" }}>Read More</Text>
       </View>
     </Pressable>
   );
@@ -209,18 +158,83 @@ function HomeScreen({ navigation }) {
   // }
 
   return (
-    <SafeAreaView style={styles.screenStyle}>
+    <View style={styles.screenStyle}>
       <StatusBar style="dark" />
-      <HomeHeaderComp
-        firstName=""
-        onLogoPress={() => navigation.navigate("CreateProfile")}
-        onProfilePress={() => navigation.navigate("Profile")}
-        onNotsPress={() => navigation.navigate("Notifications")}
-      />
-      <View style={{ height: 20 }} />
-      <View style={{ flexDirection: "row", alignSelf: "center" }}>
+
+      {/* Header Section */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginHorizontal: 30,
+        }}
+      >
+        <UnisLogo height={75} width={75} />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Pressable onPress={() => navigation.navigate("Notifications")}>
+            <Ionicons
+              name="notifications"
+              size={32}
+              color={COLORS.mainGreen}
+              style={{ marginRight: 10 }}
+            />
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate("Profile")}>
+            <Image
+              source={{
+                uri: "https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              }}
+              style={{
+                height: 60,
+                width: 60,
+                borderRadius: 30,
+                borderWidth: 2,
+                borderColor: COLORS.mainGreen,
+              }}
+            />
+          </Pressable>
+        </View>
+      </View>
+
+      {/* Home Welcome Message */}
+      <View
+        style={{
+          marginLeft: 40,
+          marginTop: 20,
+          marginBottom: 30,
+        }}
+      >
+        <Text style={{ color: "white", fontSize: 22, fontWeight: "700" }}>
+          Welcome, username! {jobTitle}
+        </Text>
+      </View>
+
+      {/* Search Box Label */}
+      <View>
+        <Text
+          style={{
+            color: "white",
+            textAlign: "center",
+            marginBottom: 5,
+            // fontSize: 12,
+          }}
+        >
+          Search the{" "}
+          <Text style={{ color: COLORS.mainGreen, fontWeight: "600" }}>
+            Unisverse
+          </Text>
+        </Text>
+      </View>
+
+      {/* Search Box */}
+
+      <View
+        style={{ flexDirection: "row", alignSelf: "center", marginBottom: 5 }}
+      >
         <TextInput
           placeholder="Enter Your Search Here"
+          placeholderTextColor={"lightgrey"}
           style={styles.textInputStyle}
           value={text}
           onChangeText={setText}
@@ -228,45 +242,131 @@ function HomeScreen({ navigation }) {
         <View
           style={{
             justifyContent: "center",
-            backgroundColor: "#fdfdfd",
+            backgroundColor: COLORS.grey,
             paddingRight: 15,
             marginLeft: -3,
+            borderTopRightRadius: 12,
+            borderBottomRightRadius: 12,
           }}
         >
-          <Foundation name="magnifying-glass" size={24} color={COLORS.yellow} />
+          <Ionicons name="globe-outline" size={28} color={COLORS.mainGreen} />
         </View>
       </View>
-      <View>
-        <Text
+      <ScrollView>
+        {/* Home 4 Tiles */}
+
+        <View
           style={{
-            color: "white",
-            textAlign: "center",
-            marginTop: 5,
-            fontSize: 12,
+            marginTop: 20,
+            flexDirection: "row",
+            // alignSelf: "center",
+            justifyContent: "space-between",
+            marginHorizontal: 20,
           }}
         >
-          Search UNIS for resources, tips & information
-        </Text>
-      </View>
-      <View style={{ height: 40 }} />
-      <FlatList
-        data={LATEST_NEWS_DATA}
-        renderItem={renderItem}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
-      />
-      <View>
-        <Text
-          style={{
-            color: "white",
-            marginLeft: 30,
-            fontSize: 22,
-            fontWeight: "500",
-          }}
+          <HomeItemBox
+            title="HR"
+            iconName="ios-people-outline"
+            link={() => navigation.navigate("HRScreen")}
+          />
+          <HomeItemBox
+            title="H&S"
+            iconName="fitness"
+            link={() => navigation.navigate("HealthSafetyScreen")}
+          />
+          <HomeItemBox
+            title="Docs"
+            iconName="md-document-outline"
+            link={() => navigation.navigate("DocsComingSoon")}
+          />
+          <HomeItemBox
+            title="Site"
+            iconName="hammer-outline"
+            link={() => navigation.navigate("SiteScreen")}
+          />
+        </View>
+        <View style={{ height: 20 }} />
+
+        {/* FlatList 1 */}
+        <FlatList
+          data={LATEST_NEWS_DATA}
+          renderItem={renderItem}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
+        />
+        {/* Home 3 Items  */}
+        <View
+          style={{ flexDirection: "row", alignSelf: "center", marginTop: 5 }}
         >
-          My Unis Hello {jobTitle}
-        </Text>
+          <HomeItemBox title="Certs" iconName="md-documents-outline" />
+          <View
+            style={{
+              alignItems: "center",
+              borderWidth: 2,
+              borderColor: COLORS.mainGreen,
+              marginHorizontal: 20,
+              justifyContent: "center",
+              paddingHorizontal: 30,
+              borderRadius: 8,
+              paddingVertical: 20,
+              backgroundColor: COLORS.grey,
+            }}
+          >
+            <MaterialIcons
+              name="qr-code-2"
+              size={36}
+              color={COLORS.mainGreen}
+            />
+            <Text style={{ color: "white", fontWeight: "600" }}>
+              Share Profile
+            </Text>
+          </View>
+          <HomeItemBox title="Cards" iconName="ios-card-outline" />
+        </View>
+        {/* Text Card 1 */}
+        <TextCardComp
+          backCol={COLORS.lightGreen}
+          title={"Build Your UNIS Profile"}
+          body={
+            "Your UNIS profiles gives site managers instant access to your info - so you can always provide your eligibility to work"
+          }
+          link={"/"}
+          buttonText={"Update Now"}
+        />
+
+        {/* FlatList 2 */}
+        <View style={{ height: 20 }} />
+        <FlatList
+          data={LATEST_NEWS_DATA}
+          renderItem={renderItem}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
+        />
+
+        {/* Text Card 2 */}
+        <TextCardComp
+          backCol={COLORS.grey}
+          title={"Explore App & Website Integration Features"}
+          body={
+            "Find out how the UNIS app seemlessly integrates with the UNIS Website Portal to help you power your construction projects"
+          }
+          link={"/"}
+          buttonText={"Book a Demo"}
+          titleColor={"white"}
+          bodyColor={"white"}
+        />
+
+        {/* FlatList 3 */}
+        <View style={{ height: 20 }} />
+        <FlatList
+          data={LATEST_NEWS_DATA}
+          renderItem={renderItem}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
+        />
 
         {/* <Pressable
           // onPress={async () => {
@@ -276,16 +376,14 @@ function HomeScreen({ navigation }) {
           >
             <Text style={{ color: "white" }}>Click</Text>
           </Pressable> */}
-      </View>
-      <HomeCard />
-      <View style={{ backgroundColor: COLORS.black, height: 100 }} />
-    </SafeAreaView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screenStyle: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: COLORS.black,
     paddingTop: 40,
     // flex: 1,
@@ -300,18 +398,21 @@ const styles = StyleSheet.create({
     height: 60,
     width: 270,
     // borderRadius: 2,
-    backgroundColor: "#fdfdfd",
+    backgroundColor: COLORS.grey,
     alignSelf: "center",
     paddingLeft: 25,
+    fontSize: 16,
+    color: "white",
+    borderTopLeftRadius: 12,
+    borderBottomLeftRadius: 12,
   },
   itemStyle: {
-    flexDirection: "row",
     marginRight: 30,
-    marginBottom: 40,
+
     backgroundColor: "black",
     borderWidth: 2,
-    borderColor: COLORS.yellow,
-    borderRadius: 8,
+    borderColor: COLORS.mainGreen,
+    borderRadius: 12,
   },
 });
 

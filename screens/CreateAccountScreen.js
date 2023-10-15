@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 // import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import "firebase/auth";
+import UnisLogo from "../components/UnisLogo";
 
 //FIREBASE CONFIG
 const firebaseConfig = {
@@ -59,31 +60,52 @@ function CreateAccountScreen({ navigation }) {
     <View style={styles.screenStyle}>
       {/* Logo */}
       <View style={{ marginBottom: 40 }}>
-        <Image
-          source={require("../assets/unis-logo.png")}
-          style={{ height: 100, resizeMode: "contain" }}
-        />
+        <UnisLogo height={200} width={200} />
+      </View>
+
+      <View style={{ marginBottom: 30 }}>
+        <Text style={{ color: "white", fontSize: 16, fontWeight: "600" }}>
+          Create Your New <Text style={{ color: COLORS.mainGreen }}>UNIS </Text>
+          Account
+        </Text>
       </View>
 
       {/* Email */}
-      <View>
-        <Text style={styles.label}>Your Email Address</Text>
+      <View style={{ marginBottom: 15 }}>
         <TextInput
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
+          placeholder="Your Email Address"
+          placeholderTextColor={"lightgrey"}
+          autoCapitalize="none"
         />
       </View>
 
       {/* Password */}
       <View>
-        <Text style={[styles.label, { marginTop: 20 }]}>Create a Password</Text>
         <TextInput
           style={styles.input}
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
+          placeholder="Enter a Secure Password"
+          placeholderTextColor={"lightgrey"}
         />
+      </View>
+
+      {/* GDPR Checkbox */}
+      <View style={{ marginHorizontal: 40, marginTop: 5 }}>
+        <Text style={{ color: "white" }}>
+          By signing up to use UNIS, I accept the T&C's as{" "}
+          <Text
+            style={{
+              textDecorationLine: "underline",
+            }}
+          >
+            outlined here
+          </Text>
+        </Text>
       </View>
 
       {/* Submit Button */}
@@ -111,15 +133,17 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   input: {
-    height: 50,
-    width: 260,
+    height: 70,
+    width: 300,
     borderWidth: 1,
     paddingLeft: 15,
-    backgroundColor: "lightgrey",
+    backgroundColor: COLORS.grey,
     borderRadius: 4,
+    fontSize: 16,
+    color: "white",
   },
   button: {
-    backgroundColor: COLORS.yellow,
+    backgroundColor: COLORS.mainGreen,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 4,

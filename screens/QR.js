@@ -4,6 +4,7 @@ import COLORS from "../misc/COLORS";
 import EX_USER_DATA from "../misc/EX_USER_DATA";
 import QRCode from "react-native-qrcode-svg";
 import firebase from "firebase/compat";
+import { Entypo } from "@expo/vector-icons";
 
 // import firebase from "firebase/compat/app";
 import "firebase/compat/database";
@@ -57,30 +58,50 @@ function QRScreen({ navigation }) {
       <Text
         style={{
           marginBottom: 20,
-          fontSize: 16,
+          fontSize: 18,
           fontWeight: "500",
           color: "white",
         }}
       >
-        You can display this QR to employers to share your profile
+        Your Unique <Text style={{ color: COLORS.mainGreen }}>UNIS </Text>QR
+        Code
       </Text>
 
-      <View style={{ marginTop: 60 }} />
+      <View style={{ marginTop: 30 }} />
       <View style={styles.cardStyle}>
-        <QRCode value="xyz" size={200} />
+        <QRCode value="xyz" size={250} />
       </View>
       <Text style={{ color: "white", marginTop: 10, fontWeight: "500" }}>
         Your Unique Unis QR
       </Text>
 
-      {/* Scan QR */}
-      <View>
-        <Pressable
-          onPress={() => navigation.navigate("ScanQR")}
-          style={{ padding: 20, marginTop: 20, backgroundColor: "#fafafa" }}
+      {/* Share Profile Button */}
+
+      <Pressable
+        onPress={() => navigation.navigate("ScanQR")}
+        style={{
+          padding: 20,
+          marginTop: 20,
+          backgroundColor: COLORS.grey,
+          alignItems: "center",
+        }}
+      >
+        <Entypo name="share-alternative" size={32} color={COLORS.mainGreen} />
+        <Text
+          style={{
+            color: "white",
+            fontWeight: "600",
+            marginTop: 5,
+          }}
         >
-          <Text>Scan QR code</Text>
-        </Pressable>
+          Share My Profile
+        </Text>
+      </Pressable>
+
+      <View style={{ marginTop: 60 }}>
+        <Text style={{ color: "white", fontWeight: "600" }}>
+          You can display your QR to employers to share your profile
+        </Text>
       </View>
     </View>
   );
@@ -94,7 +115,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
   cardStyle: {
-    backgroundColor: COLORS.yellow,
+    backgroundColor: COLORS.mainGreen,
     alignSelf: "center",
     paddingBottom: 20,
     paddingHorizontal: 20,

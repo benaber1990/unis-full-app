@@ -131,53 +131,100 @@ function InitLogIn({ navigation }) {
   return (
     <View style={styles.screenStyle}>
       {/* Logo */}
-      <View style={{ marginBottom: 40 }}>
+      <View style={{}}>
         <Image
-          source={require("../assets/unis-logo.png")}
-          style={{ height: 100, resizeMode: "contain" }}
+          source={require("../assets/newlogo.png")}
+          style={{ height: 150, resizeMode: "contain" }}
         />
       </View>
-      {/* Email */}
+      {/* Logo Copy Subtitle */}
       <View>
-        <Text style={styles.label}>Email Address</Text>
+        <Text
+          style={{
+            color: "white",
+            fontSize: 24,
+            fontWeight: "700",
+            marginBottom: 25,
+            marginTop: -10,
+          }}
+        >
+          Fast
+          <Text style={{ color: COLORS.mainGreen, fontSize: 28 }}>. </Text>
+          Simple
+          <Text style={{ color: COLORS.mainGreen, fontSize: 28 }}>. </Text>
+          Secure
+          <Text style={{ color: COLORS.mainGreen, fontSize: 28 }}>.</Text>
+        </Text>
+      </View>
+      {/* Email */}
+      <View style={{ marginBottom: 20 }}>
         <TextInput
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
+          placeholder="Email Address"
+          placeholderTextColor={"lightgrey"}
+          autoCapitalize="none"
         />
       </View>
       {/* Password */}
       <View>
-        <Text style={[styles.label, { marginTop: 20 }]}>Password</Text>
         <TextInput
           style={styles.input}
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
+          placeholder="Password"
+          placeholderTextColor={"lightgrey"}
         />
       </View>
       {/* Submit Button */}
       <Pressable onPress={handleLogin} style={styles.button}>
         <Text style={{ fontSize: 18, fontWeight: "600" }}>Submit</Text>
       </Pressable>
+
+      {/* Google Sign In */}
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         onPress={signIn}
         disabled={false}
       />
+
+      {/* Lost Password */}
+      <View>
+        <Text style={{ color: "lightgrey" }}>
+          Lost password? Click here to reset
+        </Text>
+      </View>
+
       {/* Create Account Link */}
       <Pressable
         onPress={() => navigation.navigate("CreateAccount")}
         style={{ marginTop: 40, alignSelf: "center" }}
       >
-        <Text style={{ color: "lightgrey", textAlign: "center" }}>
-          New to UNIS?
+        <Text style={{ color: "white", textAlign: "center", fontSize: 16 }}>
+          New to{" "}
+          <Text style={{ fontWeight: "700", color: COLORS.mainGreen }}>
+            UNIS
+          </Text>
+          ?
         </Text>
         <Text style={{ color: "lightgrey", textAlign: "center" }}>
           Click here to create your account
         </Text>
       </Pressable>
+
+      {/* Footer */}
+      <View>
+        <Text style={{ color: "white", marginTop: 60 }}>
+          Powered by{" "}
+          <Text style={{ fontWeight: "700", color: "#ffd500" }}>
+            UNIS Media
+          </Text>
+          . All rights reserved. 2023
+        </Text>
+      </View>
     </View>
   );
 }
@@ -199,19 +246,20 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   input: {
-    height: 50,
-    width: 260,
-    borderWidth: 1,
+    height: 60,
+    width: 300,
     paddingLeft: 15,
-    backgroundColor: "lightgrey",
+    backgroundColor: COLORS.grey,
     borderRadius: 4,
+    fontSize: 16,
   },
   button: {
-    backgroundColor: COLORS.yellow,
+    backgroundColor: COLORS.mainGreen,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 4,
     marginTop: 30,
+    marginBottom: 15,
   },
 });
 

@@ -26,6 +26,8 @@ import "firebase/compat/database";
 import "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 import { fetchCertificateImages } from "./helpers/helpers";
+import ProfIcon from "../miscComps/ProfIcon";
+import TextCardComp from "../miscComps/TextCardComp";
 
 //FIREBASE CONFIG
 const firebaseConfig = {
@@ -201,7 +203,7 @@ function Profile({ navigation }) {
               height: 60,
               borderRadius: 30,
               borderWidth: 2,
-              borderColor: COLORS.yellow,
+              borderColor: COLORS.mainGreen,
             }}
           />
           <View style={{ justifyContent: "center" }}>
@@ -215,19 +217,30 @@ function Profile({ navigation }) {
             >
               Username Here
             </Text>
+            <Text style={{ color: "lightgrey", marginLeft: 20, fontSize: 12 }}>
+              Job Title
+            </Text>
           </View>
           <Pressable
             onPress={() => navigation.navigate("Notifications")}
             style={{ marginLeft: 40, padding: 5, justifyContent: "center" }}
           >
-            <Ionicons name="ios-notifications-sharp" size={24} color="white" />
+            <Ionicons
+              name="ios-notifications-sharp"
+              size={24}
+              color={COLORS.mainGreen}
+            />
           </Pressable>
         </View>
 
         {/* Bio */}
         <View style={styles.bioContainer}>
-          <Text style={{ fontWeight: "500" }}>Bio</Text>
-          <Text>
+          <Text
+            style={{ fontWeight: "500", color: "white", fontWeight: "700" }}
+          >
+            Bio
+          </Text>
+          <Text style={{ color: "white", fontSize: 12 }}>
             Dedicated construction worker with a passion for building and a
             strong commitment to safety and teamwork. With a proven track record
             of efficiently completing projects and a keen attention to detail, I
@@ -237,7 +250,7 @@ function Profile({ navigation }) {
         </View>
 
         {/* My Cards */}
-        <TitleSection title="My Cards" />
+        {/* <TitleSection title="My Cards" />
         <Text>Profile Screen</Text>
         <FlatList
           data={EX_CARDS}
@@ -245,10 +258,22 @@ function Profile({ navigation }) {
           horizontal
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
-        />
+        /> */}
+
+        {/* 4 Cards */}
+        <View style={{ alignItems: "center" }}>
+          <View style={{ flexDirection: "row" }}>
+            <ProfIcon title="Cards" />
+            <ProfIcon title="Certs" />
+          </View>
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
+            <ProfIcon title="Gallery" />
+            <ProfIcon title="Health" />
+          </View>
+        </View>
 
         {/* Certificates */}
-        <View style={{ marginTop: 30 }}>
+        {/* <View style={{ marginTop: 30 }}>
           <TitleSection title="My Certificates" />
           <FlatList
             data={certificates}
@@ -257,10 +282,10 @@ function Profile({ navigation }) {
             showsHorizontalScrollIndicator={false}
             ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
           />
-        </View>
+        </View> */}
 
         {/* My Work  */}
-        <View style={{ marginTop: 30 }}>
+        {/* <View style={{ marginTop: 30 }}>
           <TitleSection title="My Work" />
           <FlatList
             data={EX_WORK_DATA}
@@ -269,7 +294,22 @@ function Profile({ navigation }) {
             showsHorizontalScrollIndicator={false}
             ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
           />
+        </View> */}
+
+        {/* Shared Unis Profile */}
+        <View style={{ height: 40 }} />
+        <View>
+          <TextCardComp
+            backCol={COLORS.lightGreen}
+            title={"Your Shared UNIS Profile"}
+            body={
+              "Create your own unique UNIS profile that you can show to site managers and employers. Credentials ticked will be shared."
+            }
+            link={"/"}
+            buttonText={"Manage Your Profile"}
+          />
         </View>
+
         <View style={{ backgroundColor: COLORS.black, height: 100 }} />
       </View>
     </ScrollView>
@@ -288,7 +328,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bioContainer: {
-    backgroundColor: COLORS.yellow,
+    backgroundColor: COLORS.dark,
     alignSelf: "center",
     paddingHorizontal: 50,
     paddingVertical: 20,

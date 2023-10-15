@@ -49,6 +49,10 @@ import PasswordReset from "./screens/PasswordReset";
 import SendAccessFile from "./screens/SendAccessFile";
 import DisplayProfile from "./screens/DisplayProfile";
 import InitLogIn from "./screens/InitLogIn";
+import HRScreen from "./screens/HRScreen";
+import HealthSafetyScreen from "./screens/HealthSafetyScreen";
+import SiteScreen from "./screens/SiteScreen";
+import DocsComingSoon from "./screens/DocsComingSoon";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,7 +63,7 @@ function MyTabs() {
       screenOptions={{
         headerShown: false,
         // tabBarShowLabel: false,
-        tabBarActiveTintColor: COLORS.yellow,
+        tabBarActiveTintColor: COLORS.mainGreen,
         tabBarInactiveTintColor: "#fdfdfd",
         tabBarStyle: {
           paddingBottom: 6,
@@ -83,16 +87,16 @@ function MyTabs() {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={20} color={color} />
+            <Ionicons name="home" size={24} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="CV"
-        component={CV}
+        name="Hub"
+        component={Hub}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="briefcase" size={20} color={color} />
+            <Ionicons name="globe-outline" size={24} color={color} />
           ),
         }}
       />
@@ -107,7 +111,7 @@ function MyTabs() {
               color={color}
               options={{
                 tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="person-add" size={20} color={color} />
+                  <Ionicons name="person-add" size={24} color={color} />
                 ),
               }}
             />
@@ -128,7 +132,7 @@ function MyTabs() {
         component={UserScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={20} color={color} />
+            <Ionicons name="settings-outline" size={24} color={color} />
           ),
         }}
       />
@@ -182,6 +186,13 @@ function App() {
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
         <Stack.Screen name="SendAccessFile" component={SendAccessFile} />
         <Stack.Screen name="DisplayProfile" component={DisplayProfile} />
+        <Stack.Screen name="HRScreen" component={HRScreen} />
+        <Stack.Screen name="SiteScreen" component={SiteScreen} />
+        <Stack.Screen name="DocsComingSoon" component={DocsComingSoon} />
+        <Stack.Screen
+          name="HealthSafetyScreen"
+          component={HealthSafetyScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

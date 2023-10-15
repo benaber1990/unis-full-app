@@ -20,6 +20,7 @@ import firebase from "firebase/compat";
 import "firebase/compat/database";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import TextCardComp from "../miscComps/TextCardComp";
 
 function UserScreen({ navigation }) {
   const storage = getStorage();
@@ -100,10 +101,12 @@ function UserScreen({ navigation }) {
       />
       <View style={{ maxWidth: 150, padding: 20 }}>
         <Text>Category</Text>
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>{title}</Text>
+        <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
+          {title}
+        </Text>
         <View
           style={{
-            backgroundColor: COLORS.yellow,
+            backgroundColor: COLORS.mainGreen,
             alignSelf: "flex-start",
             // marginLeft: 2,
             paddingHorizontal: 8,
@@ -129,7 +132,6 @@ function UserScreen({ navigation }) {
         {/* Col A */}
         <View
           style={{
-            marginRight: 50,
             flexDirection: "row",
             justifyContent: "center",
           }}
@@ -137,11 +139,11 @@ function UserScreen({ navigation }) {
           <Image
             source={{ uri: EX_PROFILE_DATA.profPic }}
             style={{
-              width: 60,
-              height: 60,
-              borderRadius: 30,
+              width: 70,
+              height: 70,
+              borderRadius: 35,
               borderWidth: 2,
-              borderColor: COLORS.yellow,
+              borderColor: COLORS.mainGreen,
             }}
           />
           <View style={{ justifyContent: "center" }}>
@@ -163,24 +165,14 @@ function UserScreen({ navigation }) {
           onPress={() => navigation.navigate("Notifications")}
           style={{ marginLeft: 40, padding: 5 }}
         >
-          <Ionicons name="ios-notifications-sharp" size={24} color="white" />
+          <Ionicons
+            name="ios-notifications-sharp"
+            size={32}
+            color={COLORS.mainGreen}
+          />
         </Pressable>
       </View>
-      {/* View/Edit Settings */}
-      <Pressable
-        onPress={() => navigation.navigate("Settings")}
-        style={styles.buttonStyle}
-      >
-        <FontAwesome
-          name="gear"
-          size={24}
-          color="black"
-          style={{ marginRight: 10 }}
-        />
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>
-          View/Edit Settings
-        </Text>
-      </Pressable>
+
       {/* Get Support Button*/}
       <Pressable
         onPress={() => navigation.navigate("Support")}
@@ -189,7 +181,7 @@ function UserScreen({ navigation }) {
         <Entypo
           name="help-with-circle"
           size={24}
-          color="black"
+          color={COLORS.mainGreen}
           style={{ marginRight: 10 }}
         />
         <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -205,7 +197,7 @@ function UserScreen({ navigation }) {
         <Ionicons
           name="person-circle-outline"
           size={24}
-          color="black"
+          color={COLORS.mainGreen}
           style={{ marginRight: 10 }}
         />
         <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -213,7 +205,10 @@ function UserScreen({ navigation }) {
         </Text>
       </Pressable>
 
-      <Pressable onPress={showImagePicker} style={styles.buttonStyle}>
+      <Pressable
+        onPress={showImagePicker}
+        style={[styles.buttonStyle, { backgroundColor: COLORS.grey }]}
+      >
         <Image
           style={{
             height: 80,
@@ -223,31 +218,35 @@ function UserScreen({ navigation }) {
           }}
           source={{ uri: pickedImagePath }}
         />
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>upload images</Text>
+        <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
+          upload images
+        </Text>
       </Pressable>
 
       {/* Test Firebase Button */}
-      <Pressable
+      {/* <Pressable
         onPress={() => AxiosComp()}
         style={{ marginTop: 30, padding: 20, backgroundColor: "#fafafa" }}
       >
         <Text>Send Data</Text>
-      </Pressable>
+      </Pressable> */}
 
       {/* Content FlatList */}
-      <FlatList
-        data={LATEST_NEWS_DATA}
-        renderItem={renderItem}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
-      />
+      <View style={{ height: 200 }}>
+        <FlatList
+          data={LATEST_NEWS_DATA}
+          renderItem={renderItem}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
+        />
+      </View>
 
       {/* More Info Section */}
       <View
         style={{
           backgroundColor: COLORS.black,
-          paddingBottom: 300,
+          // paddingBottom: 300,
           marginTop: 40,
           flexDirection: "row",
         }}
@@ -265,8 +264,20 @@ function UserScreen({ navigation }) {
           color="white"
           style={{ marginLeft: 15 }}
         />
-        <Text></Text>
       </View>
+
+      {/* Text Card */}
+      <TextCardComp
+        backCol={COLORS.grey}
+        title={"Explore UNIS Integration Features"}
+        body={
+          "Find out how the UNIS app seamlessly integrates with the UNIS Portal to power your construction projects"
+        }
+        link={"/"}
+        buttonText={"Book a Demo Now"}
+        titleColor={"white"}
+        bodyColor={"white"}
+      />
     </View>
   );
 }
@@ -274,7 +285,7 @@ function UserScreen({ navigation }) {
 const styles = StyleSheet.create({
   screenStyle: {
     alignItems: "center",
-    // flex: 1,
+    flex: 1,
     backgroundColor: COLORS.black,
     // alignItems: "center",
     paddingTop: 60,
@@ -284,7 +295,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonStyle: {
-    backgroundColor: COLORS.yellow,
+    backgroundColor: COLORS.lightGreen,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 6,
@@ -296,9 +307,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginRight: 30,
     marginTop: 20,
-    backgroundColor: "white",
+    backgroundColor: COLORS.grey,
     padding: 15,
     borderRadius: 6,
+    borderWidth: 2,
+    borderColor: COLORS.mainGreen,
   },
 });
 

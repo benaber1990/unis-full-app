@@ -5,7 +5,7 @@ import COLORS from "../misc/COLORS";
 import TextCardComp from "../miscComps/TextCardComp";
 import UnisFooter1 from "../miscComps/UnisFooter1";
 
-export default function HealthSafetyScreen() {
+export default function HealthSafetyScreen({ navigation }) {
   return (
     <View style={styles.screenStyle}>
       {/* Title */}
@@ -17,7 +17,7 @@ export default function HealthSafetyScreen() {
           marginBottom: 60,
         }}
       >
-        Your <Text style={{ color: COLORS.mainGreen }}>UNIS HR </Text>Tools
+        Your <Text style={{ color: COLORS.mainGreen }}>UNIS Health & Safety </Text>Tools
       </Text>
 
       {/* Coming Soon Icons */}
@@ -38,7 +38,8 @@ export default function HealthSafetyScreen() {
         body={
           "Professional UNIS packages designed to take your construction business further"
         }
-        link={"/"}
+        link={() => navigation.navigate('ContactScreen')
+      }
         buttonText={"Find Out More"}
         // titleColor={"white"}
         // bodyColor={"white"}

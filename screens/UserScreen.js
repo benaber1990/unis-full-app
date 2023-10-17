@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -18,13 +19,15 @@ import * as ImagePicker from "expo-image-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import firebase from "firebase/compat";
 import "firebase/compat/database";
-
+import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextCardComp from "../miscComps/TextCardComp";
 
 function UserScreen({ navigation }) {
   const storage = getStorage();
   const [url, setUrl] = useState();
+  const [hasNots, setHasNots] = useState(false);
+
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
   // This function is triggered when the "Select an image" button pressed
@@ -90,6 +93,15 @@ function UserScreen({ navigation }) {
       console.error("Error uploading image:", error);
     }
   };
+
+  // Has Notifications Logic
+  const NUMNOTS = NOTIFICATIONS_DATA.length;
+
+  useEffect(() => {
+    NUMNOTS > 0 ? setHasNots(true) : setHasNots(false);
+  }),
+    [];
+
   const Item = ({ title, imageLink }) => (
     <Pressable
       onPress={() => navigation.navigate("ContentDisplay")}
@@ -126,159 +138,197 @@ function UserScreen({ navigation }) {
   );
 
   return (
-    <View style={styles.screenStyle}>
-      {/* Header */}
-      <View style={styles.headerContainer}>
-        {/* Col A */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            source={{ uri: EX_PROFILE_DATA.profPic }}
+    <ScrollView>
+      <View style={styles.screenStyle}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          {/* Col A */}
+          <View
             style={{
-              width: 70,
-              height: 70,
-              borderRadius: 35,
-              borderWidth: 2,
-              borderColor: COLORS.mainGreen,
+              flexDirection: "row",
+              justifyContent: "center",
             }}
-          />
-          <View style={{ justifyContent: "center" }}>
-            <Text
+          >
+            <Image
+              source={{ uri: EX_PROFILE_DATA.profPic }}
               style={{
-                color: "white",
-                marginLeft: 30,
-                fontSize: 22,
-                fontWeight: "500",
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                borderWidth: 2,
+                borderColor: COLORS.mainGreen,
+              }}
+            />
+            <View
+              style={{
+                justifyContent: "center",
+                marginRight: 40,
+                marginLeft: 10,
               }}
             >
-              Username Here
-            </Text>
+              <Text
+                style={{
+                  color: "white",
+                  marginLeft: 30,
+                  fontSize: 20,
+                  fontWeight: "500",
+                }}
+              >
+                Username Here
+              </Text>
+            </View>
           </View>
+
+          {/* Col B */}
+          {!hasNots ? (
+            <Pressable onPress={() => navigation.navigate("Notifications")}>
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.lightGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => navigation.navigate("Notifications")}
+              style={{ alignItems: "center" }}
+            >
+              <View
+                style={{
+                  height: 6,
+                  width: 6,
+                  borderRadius: 3,
+                  backgroundColor: "red",
+                  marginRight: 10,
+                  marginBottom: 1,
+                }}
+              />
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.mainGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          )}
         </View>
 
-        {/* Col B */}
+        {/* Get Support Button*/}
         <Pressable
-          onPress={() => navigation.navigate("Notifications")}
-          style={{ marginLeft: 40, padding: 5 }}
+          onPress={() => navigation.navigate("Support")}
+          style={styles.buttonStyle}
+        >
+          <Entypo
+            name="help-with-circle"
+            size={24}
+            color={COLORS.mainGreen}
+            style={{ marginRight: 10 }}
+          />
+          <Text style={{ fontSize: 16, fontWeight: "600" }}>
+            Get Help/Support
+          </Text>
+        </Pressable>
+
+        {/* Update Profile Button */}
+        <Pressable
+          onPress={() => navigation.navigate("UpdateProfile")}
+          style={styles.buttonStyle}
         >
           <Ionicons
-            name="ios-notifications-sharp"
-            size={32}
+            name="person-circle-outline"
+            size={24}
             color={COLORS.mainGreen}
+            style={{ marginRight: 10 }}
           />
+          <Text style={{ fontSize: 16, fontWeight: "600" }}>
+            Update my Profile
+          </Text>
         </Pressable>
-      </View>
 
-      {/* Get Support Button*/}
-      <Pressable
-        onPress={() => navigation.navigate("Support")}
-        style={styles.buttonStyle}
-      >
-        <Entypo
-          name="help-with-circle"
-          size={24}
-          color={COLORS.mainGreen}
-          style={{ marginRight: 10 }}
-        />
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>
-          Get Help/Support
-        </Text>
-      </Pressable>
+        <Pressable
+          onPress={showImagePicker}
+          style={[styles.buttonStyle, { backgroundColor: COLORS.grey }]}
+        >
+          <Image
+            style={{
+              height: 80,
+              width: 80,
+              borderRadius: 40,
+              borderColor: "black",
+            }}
+            source={{ uri: pickedImagePath }}
+          />
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
+            upload images
+          </Text>
+        </Pressable>
 
-      {/* Update Profile Button */}
-      <Pressable
-        onPress={() => navigation.navigate("UpdateProfile")}
-        style={styles.buttonStyle}
-      >
-        <Ionicons
-          name="person-circle-outline"
-          size={24}
-          color={COLORS.mainGreen}
-          style={{ marginRight: 10 }}
-        />
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>
-          Update my Profile
-        </Text>
-      </Pressable>
-
-      <Pressable
-        onPress={showImagePicker}
-        style={[styles.buttonStyle, { backgroundColor: COLORS.grey }]}
-      >
-        <Image
-          style={{
-            height: 80,
-            width: 80,
-            borderRadius: 40,
-            borderColor: "black",
-          }}
-          source={{ uri: pickedImagePath }}
-        />
-        <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
-          upload images
-        </Text>
-      </Pressable>
-
-      {/* Test Firebase Button */}
-      {/* <Pressable
+        {/* Test Firebase Button */}
+        {/* <Pressable
         onPress={() => AxiosComp()}
         style={{ marginTop: 30, padding: 20, backgroundColor: "#fafafa" }}
       >
         <Text>Send Data</Text>
       </Pressable> */}
 
-      {/* Content FlatList */}
-      <View style={{ height: 200 }}>
-        <FlatList
-          data={LATEST_NEWS_DATA}
-          renderItem={renderItem}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
-        />
-      </View>
+        {/* Content FlatList */}
+        <View style={{ height: 200 }}>
+          <FlatList
+            data={LATEST_NEWS_DATA}
+            renderItem={renderItem}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
+          />
+        </View>
 
-      {/* More Info Section */}
-      <View
-        style={{
-          backgroundColor: COLORS.black,
-          // paddingBottom: 300,
-          marginTop: 40,
-          flexDirection: "row",
-        }}
-      >
-        <FontAwesome
-          name="linkedin-square"
-          size={32}
-          color="white"
-          style={{ marginRight: 15 }}
-        />
-        <FontAwesome name="facebook-square" size={32} color="white" />
-        <FontAwesome
-          name="instagram"
-          size={32}
-          color="white"
-          style={{ marginLeft: 15 }}
-        />
-      </View>
+        {/* More Info Section */}
+        <View
+          style={{
+            backgroundColor: COLORS.black,
+            // paddingBottom: 300,
+            marginTop: 40,
+            flexDirection: "row",
+          }}
+        >
+          <FontAwesome
+            name="linkedin-square"
+            size={32}
+            color="white"
+            style={{ marginRight: 15 }}
+          />
+          <FontAwesome name="facebook-square" size={32} color="white" />
+          <FontAwesome
+            name="instagram"
+            size={32}
+            color="white"
+            style={{ marginLeft: 15 }}
+          />
+        </View>
 
-      {/* Text Card */}
-      <TextCardComp
-        backCol={COLORS.grey}
-        title={"Explore UNIS Integration Features"}
-        body={
-          "Find out how the UNIS app seamlessly integrates with the UNIS Portal to power your construction projects"
-        }
-        link={"/"}
-        buttonText={"Book a Demo Now"}
-        titleColor={"white"}
-        bodyColor={"white"}
-      />
-    </View>
+        {/* Text Card */}
+        <TextCardComp
+          backCol={COLORS.grey}
+          title={"Explore UNIS Integration Features"}
+          body={
+            "Find out how the UNIS app seamlessly integrates with the UNIS Portal to power your construction projects"
+          }
+          link={() => navigation.navigate("ContactScreen")}
+          buttonText={"Book a Demo Now"}
+          titleColor={"white"}
+          bodyColor={"white"}
+        />
+
+        {/* Log Out */}
+        <Pressable
+          onPress={() => navigation.navigate("ConfirmLogOut")}
+          style={{ paddingTop: 30, paddingBottom: 30 }}
+        >
+          <Text style={{ color: COLORS.lightGreen }}> Log out of UNIS</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 

@@ -46,7 +46,7 @@ function CreateAccountScreen({ navigation }) {
       .then((userCredential) => {
         // Registration successful, user is signed in
         const user = userCredential.user;
-        alert("k");
+        // alert("k");
         console.log("Registration successful:", user);
         navigationHndl.navigate("CreateProfile");
       })

@@ -33,6 +33,9 @@ if (!firebase.apps.length) {
 }
 
 function CreateProfile({ navigation }) {
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [gender, setGender] = useState('');
   const [location, setLocation] = useState("");
   const [postcode, setPostcode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -40,6 +43,9 @@ function CreateProfile({ navigation }) {
   const [jobTitle, setJobTitle] = useState("");
   const [position, setPosition] = useState("");
   const [employmentType, setEmploymentType] = useState("");
+  const [DOBDay, setDOBDay] = useState('')
+  const [DOBMonth, setDOBMonth] = useState('');
+  const [DOBYear, setDOBYear] = useState('');
 
   const navigationHndl = useNavigation();
 
@@ -53,6 +59,9 @@ function CreateProfile({ navigation }) {
         .collection("users")
         .doc(user.uid);
       await collectionRef.set({
+        firstName: firstName,
+        surname: surname,
+        gender: gender,
         location: location,
         postcode: postcode,
         phoneNumber: phoneNumber,
@@ -82,8 +91,9 @@ function CreateProfile({ navigation }) {
   }, []);
 
   return (
+    <ScrollView>
     <View style={styles.screenStyle}>
-      <View style={{ marginBottom: 20 }}>
+      <View style={{ marginBottom: 20, paddingTop: 40 }}>
         <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
           Create Profile
         </Text>
@@ -98,6 +108,28 @@ function CreateProfile({ navigation }) {
 
       {/* Create Profile */}
       <View>
+      
+      {/* First Name */}
+      <View>
+          <Text style={styles.label}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            value={firstName}
+            onChangeText={(text) => setFirstName(text)}
+          />
+        </View>
+
+        {/* Surname */}
+        <View>
+          <Text style={styles.label}>Surname</Text>
+          <TextInput
+            style={styles.input}
+            value={surname}
+            onChangeText={(text) => setSurname(text)}
+          />
+        </View>
+
+
         <View>
           <Text style={styles.label}>Location</Text>
           <TextInput
@@ -122,14 +154,60 @@ function CreateProfile({ navigation }) {
             onChangeText={(text) => setPhoneNumber(text)}
           />
         </View>
-        <View>
+        {/* <View>
           <Text style={styles.label}>Date of Birth</Text>
           <TextInput
             style={styles.input}
             value={dob}
             onChangeText={(text) => setDob(text)}
           />
+        </View> */}
+
+        {/* Date of Birth */}
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ marginRight: 20}}>
+            <Text style={styles.label}>DOB DD</Text>
+            <TextInput 
+            style={[styles.input, { width: '100%'}]}
+            value={DOBDay}
+            onChangeText={(text) => setDOBDay(text)}
+            keyboardType="numeric"
+            maxLength={2}
+            />
+          </View>
+          <View style={{ marginRight: 20}}>
+            <Text style={styles.label}>DOB MM</Text>
+            <TextInput 
+            style={[styles.input, { width: '100%'}]}
+            value={DOBMonth}
+            onChangeText={(text) => setDOBMonth(text)}
+            keyboardType="numeric"
+            maxLength={2}
+            />
+          </View>
+          <View style={{ }}>
+            <Text style={styles.label}>DOB YYYY</Text>
+            <TextInput 
+            style={[styles.input, { width: '100%'}]}
+            value={DOBYear}
+            onChangeText={(text) => setDOBYear(text)}
+            keyboardType="numeric"
+            maxLength={4}
+            />
+          </View>
         </View>
+
+        {/* Gender */}
+        <View>
+          <Text style={styles.label}>Gender</Text>
+          <TextInput
+            style={styles.input}
+            value={gender}
+            onChangeText={(text) => setGender(text)}
+          />
+        </View>
+
+{/* Job Title */}
         <View>
           <Text style={styles.label}>Job Title</Text>
           <TextInput
@@ -166,15 +244,16 @@ function CreateProfile({ navigation }) {
         onPress={addDataToFirestore}
         style={{
           padding: 20,
-          backgroundColor: COLORS.yellow,
+          backgroundColor: COLORS.mainGreen,
           paddingVertical: 12,
           paddingHorizontal: 20,
           borderRadius: 4,
+          marginBottom: 40
         }}
       >
         <Text style={{ fontSize: 16, fontWeight: "600" }}>Save & Submit</Text>
       </Pressable>
-    </View>
+    </View></ScrollView>
   );
 }
 
@@ -190,14 +269,21 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   input: {
-    height: 40,
-    width: 270,
+    height: 50,
+    width: 300,
     paddingLeft: 15,
-    borderWidth: 1,
     marginTop: 4,
     marginBottom: 20,
     backgroundColor: COLORS.grey,
+    fontSize: 16,
+    color: 'white'
   },
+  button: {
+    backgroundColor: COLORS.mainGreen,
+    paddingHorizontal: 25,
+    paddingVertical: 12,
+    borderRadius: 4,
+  }
 });
 
 export default CreateProfile;

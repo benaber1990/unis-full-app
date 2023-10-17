@@ -1,18 +1,47 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, FlatList, Pressable, Modal, Animated } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import EX_CARDS from "../misc/EX_CARDS";
 import COLORS from "../misc/COLORS";
-import { Octicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign, Feather, Octicons } from "@expo/vector-icons";
 
 function AllCards({ navigation }) {
+  const [hasCards, setHasCards] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+const openModal = (item) => {
+  setSelectedItem(item)
+  setModalVisible(true)
+}
+
+const fadeAnim = new Animated.Value(0);
+const translateYAnim = new Animated.Value(100);
+
+useEffect(() => {
+  Animated.parallel([
+    Animated.timing(fadeAnim, {
+    toValue: 1,
+    duration: 1000,
+    useNativeDriver: true
+    })
+  ]),
+  Animated.timing(fadeAnim, {
+    toValue: 1,
+    duration: 1000,
+    useNativeDriver: true
+  }).start()
+},)
+ 
   const Item = ({ title, cat, description }) => (
     <Pressable
-      onPress={() => navigation.navigate("SingleCard")}
-      style={styles.cardItemStyle}
+      onPress={() => openModal(title)}
     >
+      <Animated.View
+        style={[styles.cardItemStyle, {opacity: fadeAnim, transform: [{ translateY: translateYAnim.interpolate({
+          inputRange: [1, 2],
+          outputRange: [1, 1]
+         }) }]}]} >
       <View
         style={{
           marginTop: 30,
@@ -30,6 +59,7 @@ function AllCards({ navigation }) {
         <Text>Text</Text>
         <Text>Text</Text>
       </View>
+      </Animated.View>
     </Pressable>
   );
 
@@ -39,25 +69,83 @@ function AllCards({ navigation }) {
 
   return (
     <View style={styles.screenStyle}>
-      <FlatList
+       
+            <Modal
+            animationType="slide"
+            visible={modalVisible}
+            >
+              <View style={{ backgroundColor: 'white', backgroundColor: COLORS.black, width: '100%', height: '100%', alignSelf: 'center', alignItems: 'center', paddingTop: 60}}>
+              <Pressable 
+              onPress={() => setModalVisible(false)}
+              style={{ padding: 10, alignSelf: 'flex-end'}}>
+              <AntDesign name="closecircleo" size={24} color='lightgrey' style={{ alignSelf: 'flex-end', marginRight: 40}}/>
+              </Pressable>
+              <Text
+              style={{ color: COLORS.lightGreen}}
+              >This is a Modal</Text>
+              <Animated.View
+             style={[styles.modalCardItemStyle, {opacity: fadeAnim, transform: [{ translateY: translateYAnim.interpolate({
+              inputRange: [1, 2],
+              outputRange: [1, 1]
+             }) }]}]} >
+              <Text style={{ color: 'white'}}>Hello!</Text>
+              </Animated.View>
+             
+              <Text
+              style={{ color: COLORS.mainGreen, fontSize: 18, fontWeight: '700'}}
+              >{selectedItem}</Text>
+              <Pressable onPress={() => setModalVisible(false)}
+              style={{ backgroundColor: COLORS.lightGreen, paddingVertical: 8, paddingHorizontal: 15, borderRadius: 6}}
+              >
+                <Text style={{ fontWeight: '600'}}>Close Card Window</Text>
+              </Pressable>
+              </View>
+            </Modal>
+          
+       {hasCards ? <FlatList
         data={EX_CARDS}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
-          <View>
+          <View style={{ marginBottom: 50}}>
+        
             <Pressable
               onPress={() => navigation.navigate("AddNewCard")}
-              style={{
-                paddingHorizontal: 30,
-                paddingVertical: 20,
-                borderRadius: 6,
-                backgroundColor: "#fafafa",
-                marginBottom: 30,
-                alignSelf: "center",
-                marginTop: 40,
-                alignItems: "center",
-                flexDirection: "row",
-              }}
+              style={[styles.buttonStyle, {marginTop: 60}]}
+            >
+              <Ionicons
+                name="add-circle-outline"
+                size={24}
+                color="black"
+                style={{ marginRight: 10}}
+              />
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 18,
+                  fontWeight: "500",
+                }}
+              >
+                Upload New Card
+              </Text>
+            </Pressable>
+          </View>
+        )}
+      /> :
+
+      <View style={{
+        paddingTop: 320,
+        marginHorizontal: 30
+      }}>
+        <Text
+        style={{ color: COLORS.lightGreen, textAlign: 'center', fontSize: 16}}
+        >It looks like you don't have any cards saved yet. Click 'Upload Card' to get started</Text>
+
+
+<View>
+            <Pressable
+              onPress={() => navigation.navigate("AddNewCard")}
+              style={styles.buttonStyle}
             >
               <Ionicons
                 name="add-circle-outline"
@@ -72,12 +160,14 @@ function AllCards({ navigation }) {
                   fontWeight: "500",
                 }}
               >
-                Add New Card
+                Upload Card
               </Text>
             </Pressable>
           </View>
-        )}
-      />
+        </View>
+
+        
+      }
     </View>
   );
 }
@@ -91,13 +181,39 @@ const styles = StyleSheet.create({
   },
   cardItemStyle: {
     backgroundColor: COLORS.yellow,
-    width: 300,
+    width: 320,
+    height: 200,
     // paddingVertical: 80,
     paddingLeft: 30,
     paddingRight: 30,
-    borderRadius: 6,
-    marginBottom: 30,
+    borderRadius: 20,
+    marginTop: -60,
+    borderWidth: 2,
+    
   },
+  modalCardItemStyle: {
+    backgroundColor: COLORS.lightGreen,
+    width: 320,
+    height: 200,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 20,
+    marginBottom: 10,
+    marginTop: 10,
+    borderWidth: 2,
+    
+  },
+  buttonStyle: {
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderRadius: 6,
+    backgroundColor: COLORS.mainGreen,
+    marginBottom: 30,
+    alignSelf: "center",
+    marginTop: 40,
+    alignItems: "center",
+    flexDirection: "row",
+  }
 });
 
 export default AllCards;

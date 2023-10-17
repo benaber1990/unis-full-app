@@ -12,7 +12,7 @@ function YellowButton({ onPress, title }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.yellow,
+    backgroundColor: COLORS.mainGreen,
     paddingHorizontal: 25,
     paddingVertical: 12,
     borderRadius: 4,

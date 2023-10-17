@@ -20,8 +20,8 @@ function NotificationsScreen({ navigation }) {
         style={{
           width: 20,
           backgroundColor: COLORS.mainGreen,
-          borderTopLeftRadius: 8,
-          borderBottomLeftRadius: 8,
+          borderTopLeftRadius: 4,
+          borderBottomLeftRadius: 4,
           height: "100%",
         }}
       />
@@ -65,10 +65,8 @@ function NotificationsScreen({ navigation }) {
       <View
         style={{
           marginLeft: 15,
-          backgroundColor: "red",
+          backgroundColor: COLORS.black,
           height: "100%",
-          borderTopRightRadius: 8,
-          borderBottomRightRadius: 8,
         }}
       >
         <Text
@@ -76,6 +74,8 @@ function NotificationsScreen({ navigation }) {
             color: "white",
             fontWeight: "500",
             fontSize: 12,
+            marginLeft: 5,
+            marginTop: 10,
           }}
         >
           3 Hours
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     // paddingVertical: 15,
     // paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 4,
     flexDirection: "row",
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -16,13 +16,24 @@ import HomeItemBox from "../miscComps/HomeItemBox";
 import ProfNewIcon from "../miscComps/ProfNewIcon";
 import TextCardComp from "../miscComps/TextCardComp";
 import LATEST_NEWS_DATA from "../misc/LATEST_NEWS_DATA";
+import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
 
 function Hub() {
   const [text, onChangeText] = React.useState("Useless Text");
 
+  const [hasNots, setHasNots] = useState(false);
+
   const [isLiked, setIsLiked] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [isMarked, setIsMarked] = useState(false);
+
+  // Has Notifications Logic
+  const NUMNOTS = NOTIFICATIONS_DATA.length;
+
+  useEffect(() => {
+    NUMNOTS > 0 ? setHasNots(true) : setHasNots(false);
+  }),
+    [];
 
   // Social Media Card Comp Item
   const Item = ({ title, imageLink }) => (
@@ -227,7 +238,38 @@ function Hub() {
 
         {/* Column C */}
         <View>
-          <Ionicons name="notifications" size={32} color={COLORS.mainGreen} />
+          {!hasNots ? (
+            <Pressable onPress={() => navigation.navigate("Notifications")}>
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.lightGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => navigation.navigate("Notifications")}
+              style={{ alignItems: "center" }}
+            >
+              <View
+                style={{
+                  height: 6,
+                  width: 6,
+                  borderRadius: 3,
+                  backgroundColor: "red",
+                  marginRight: 10,
+                  marginBottom: 1,
+                }}
+              />
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.mainGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          )}
         </View>
       </View>
       <Text>QR Screen</Text>

@@ -155,7 +155,7 @@ function UpdateProfile({ navigation }) {
 
 const styles = StyleSheet.create({
   screenStyle: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: COLORS.black,
     flex: 1,
     alignItems: "center",
   },
@@ -170,18 +170,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   textInputStyle: {
-    height: 40,
+    height: 60,
     width: 240,
     borderRadius: 3,
     borderWidth: 1,
     paddingLeft: 15,
     marginBottom: 20,
-    backgroundColor: "white",
+    backgroundColor: COLORS.grey,
+    color: "white",
   },
   labelTextStyle: {
     marginBottom: 5,
     fontWeight: "500",
     fontSize: 16,
+    color: "white",
   },
 });
 

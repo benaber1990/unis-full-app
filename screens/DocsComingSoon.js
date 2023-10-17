@@ -5,7 +5,7 @@ import COLORS from "../misc/COLORS";
 import TextCardComp from "../miscComps/TextCardComp";
 import UnisFooter1 from "../miscComps/UnisFooter1";
 
-export default function DocsComingSoon() {
+export default function DocsComingSoon({ navigation }) {
   return (
     <View style={styles.screenStyle}>
       {/* Title */}
@@ -38,7 +38,7 @@ export default function DocsComingSoon() {
         body={
           "Professional UNIS packages designed to take your construction business further"
         }
-        link={"/"}
+        link={() => navigation.navigate('ContactScreen')}
         buttonText={"Find Out More"}
         // titleColor={"white"}
         // bodyColor={"white"}

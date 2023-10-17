@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import COLORS from "../misc/COLORS";
 import { FontAwesome } from "@expo/vector-icons";
-
 export default function ProfIcon({ title, link }) {
   return (
-    <View style={styles.container}>
+    <Pressable onPress={link} style={styles.container}>
       <View
         style={{
           flexDirection: "row",
@@ -46,7 +45,7 @@ export default function ProfIcon({ title, link }) {
           View All
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

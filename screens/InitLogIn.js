@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey,
     borderRadius: 4,
     fontSize: 16,
+    color: "white"
   },
   button: {
     backgroundColor: COLORS.mainGreen,

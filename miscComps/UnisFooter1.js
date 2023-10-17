@@ -20,12 +20,13 @@ export default function UnisFooter1() {
             fontWeight: "700",
           }}
         >
-          UNIS.
+          {" "}
+          UNIS.{" "}
         </Text>
-        All rights reserverd. 2023
+        All rights reserved. 2023
       </Text>
 
-      <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>
+      <Text style={{ color: "white", fontSize: 18, fontWeight: "700" }}>
         Fast<Text style={{ color: COLORS.mainGreen }}>. </Text>Simple
         <Text style={{ color: COLORS.mainGreen }}>. </Text>Secure
       </Text>

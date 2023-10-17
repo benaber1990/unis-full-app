@@ -53,6 +53,11 @@ import HRScreen from "./screens/HRScreen";
 import HealthSafetyScreen from "./screens/HealthSafetyScreen";
 import SiteScreen from "./screens/SiteScreen";
 import DocsComingSoon from "./screens/DocsComingSoon";
+import ContactScreen from "./screens/ContactScreen";
+import ConfirmLogOut from "./screens/ConfirmLogOut";
+import DrawingsScreen from "./screens/DrawingsScreen";
+import DrawingDisplay from "./screens/DrawingDisplay";
+import HealthScreen from "./screens/HealthScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,16 +69,16 @@ function MyTabs() {
         headerShown: false,
         // tabBarShowLabel: false,
         tabBarActiveTintColor: COLORS.mainGreen,
-        tabBarInactiveTintColor: "#fdfdfd",
+        tabBarInactiveTintColor: COLORS.lightGreen,
         tabBarStyle: {
           paddingBottom: 6,
-          paddingTop: 3,
+          paddingTop: 6,
           backgroundColor: COLORS.black,
           borderTopColor: COLORS.black,
         },
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="InitLogIn"
         component={InitLogIn}
         options={{
@@ -81,13 +86,14 @@ function MyTabs() {
             <Ionicons name="home" size={20} color={color} />
           ),
         }}
-      />
+
+      /> */}
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={24} color={color} />
+            <Ionicons name="home" size={18} color={color} />
           ),
         }}
       />
@@ -96,7 +102,7 @@ function MyTabs() {
         component={Hub}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="globe-outline" size={24} color={color} />
+            <Ionicons name="globe-outline" size={22} color={color} />
           ),
         }}
       />
@@ -107,7 +113,7 @@ function MyTabs() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons
               name="qr-code-outline"
-              size={20}
+              size={19}
               color={color}
               options={{
                 tabBarIcon: ({ color, size }) => (
@@ -131,8 +137,9 @@ function MyTabs() {
         name="User"
         component={UserScreen}
         options={{
+          title: "Account",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={24} color={color} />
+            <Ionicons name="settings-outline" size={21} color={color} />
           ),
         }}
       />
@@ -189,6 +196,12 @@ function App() {
         <Stack.Screen name="HRScreen" component={HRScreen} />
         <Stack.Screen name="SiteScreen" component={SiteScreen} />
         <Stack.Screen name="DocsComingSoon" component={DocsComingSoon} />
+        <Stack.Screen name="ContactScreen" component={ContactScreen} />
+        <Stack.Screen name="InitLogin" component={InitLogIn} />
+        <Stack.Screen name="ConfirmLogOut" component={ConfirmLogOut} />
+        <Stack.Screen name="DrawingsScreen" component={DrawingsScreen} />
+        <Stack.Screen name="DrawingDisplay" component={DrawingDisplay} />
+        <Stack.Screen name="HealthScreen" component={HealthScreen} />
         <Stack.Screen
           name="HealthSafetyScreen"
           component={HealthSafetyScreen}

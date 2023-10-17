@@ -12,6 +12,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import COLORS from "../misc/COLORS";
 import YellowButton from "../components/YellowButton";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function AddNewCard({ navigation }) {
   const [image, setImage] = useState(null);
@@ -39,7 +40,20 @@ export default function AddNewCard({ navigation }) {
           Upload New Card
         </Text>
       </View>
-      <YellowButton title="Upload Your Card" onPress={pickImage} />
+
+{/* Upload Item */}
+<Pressable
+onPress={() => navigation.navigate('AddNewCard')}
+style={{ marginBottom: 10}} >
+<MaterialCommunityIcons name="upload-lock" size={72} color={COLORS.mainGreen} />
+</Pressable>
+
+      {/* Button */}
+      <Pressable 
+      onPress={() => navigation.navigate('AddNewCard')}
+      style={styles.button}>
+        <Text style={{ fontSize: 16, fontWeight: '700'}}>Upload Your Card</Text>
+      </Pressable>
       {image && (
         <View style={{ marginTop: 30 }}>
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
@@ -83,4 +97,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  button: {
+
+      backgroundColor: COLORS.mainGreen,
+      paddingHorizontal: 25,
+      paddingVertical: 12,
+      borderRadius: 4,
+
+  }
 });

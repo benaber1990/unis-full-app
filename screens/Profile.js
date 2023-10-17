@@ -20,6 +20,7 @@ import EX_PROFILE_DATA from "../misc/EX_PROFILE_DATA";
 import EX_WORK_DATA from "../misc/EX_WORK_DATA";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import firebase from "firebase/compat";
+import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
 
 // import firebase from "firebase/compat/app";
 import "firebase/compat/database";
@@ -67,6 +68,11 @@ function Profile({ navigation }) {
   const isFocused = useIsFocused();
   const { uid } = firebase.auth().currentUser;
   const [certificates, setCertificates] = useState([]);
+  const [jobTitle, setJobTitle] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const [surname, setSurname] = useState(null);
+  const [hasNots, setHasNots] = useState(false);
+
   const fetchData = async () => {
     console.log("uid", uid);
     try {
@@ -82,7 +88,10 @@ function Profile({ navigation }) {
       setData(snapshot?.data());
       // console.log("Hello");
       // console.log(data);
-      // console.log(data[0].firstName);
+      console.log(data.jobTitle);
+      setJobTitle(data.jobTitle);
+      setFirstName(data.firstName);
+      setSurname(data.surname);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -109,6 +118,14 @@ function Profile({ navigation }) {
     fetchData();
     setCertificates(fetchCertificateImages(uid, "certificates"));
   }, [isFocused]);
+
+  // Has Notifications Logic
+  const NUMNOTS = NOTIFICATIONS_DATA.length;
+
+  useEffect(() => {
+    NUMNOTS > 0 ? setHasNots(true) : setHasNots(false);
+  }),
+    [];
 
   // Cards FlatList
   const Item1 = ({ title, cat, description }) => (
@@ -206,7 +223,13 @@ function Profile({ navigation }) {
               borderColor: COLORS.mainGreen,
             }}
           />
-          <View style={{ justifyContent: "center" }}>
+          <View
+            style={{
+              justifyContent: "center",
+              marginRight: 30,
+              marginLeft: 10,
+            }}
+          >
             <Text
               style={{
                 fontSize: 18,
@@ -215,22 +238,44 @@ function Profile({ navigation }) {
                 marginLeft: 20,
               }}
             >
-              Username Here
+              {firstName} {surname}
             </Text>
-            <Text style={{ color: "lightgrey", marginLeft: 20, fontSize: 12 }}>
-              Job Title
+            <Text style={{ color: "lightgrey", marginLeft: 20 }}>
+              {jobTitle}
             </Text>
           </View>
-          <Pressable
-            onPress={() => navigation.navigate("Notifications")}
-            style={{ marginLeft: 40, padding: 5, justifyContent: "center" }}
-          >
-            <Ionicons
-              name="ios-notifications-sharp"
-              size={24}
-              color={COLORS.mainGreen}
-            />
-          </Pressable>
+          {!hasNots ? (
+            <Pressable onPress={() => navigation.navigate("Notifications")}>
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.lightGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => navigation.navigate("Notifications")}
+              style={{ alignItems: "center" }}
+            >
+              <View
+                style={{
+                  height: 6,
+                  width: 6,
+                  borderRadius: 3,
+                  backgroundColor: "red",
+                  marginRight: 10,
+                  marginBottom: 1,
+                }}
+              />
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.mainGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          )}
         </View>
 
         {/* Bio */}
@@ -263,12 +308,24 @@ function Profile({ navigation }) {
         {/* 4 Cards */}
         <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
-            <ProfIcon title="Cards" />
-            <ProfIcon title="Certs" />
+            <ProfIcon
+              title="Cards"
+              link={() => navigation.navigate("AllCards")}
+            />
+            <ProfIcon
+              title="Certs"
+              link={() => navigation.navigate("AllDocuments")}
+            />
           </View>
           <View style={{ flexDirection: "row", marginTop: 10 }}>
-            <ProfIcon title="Gallery" />
-            <ProfIcon title="Health" />
+            <ProfIcon
+              title="Drawings"
+              link={() => navigation.navigate("DrawingsScreen")}
+            />
+            <ProfIcon
+              title="Health"
+              link={() => navigation.navigate("HealthScreen")}
+            />
           </View>
         </View>
 
@@ -305,7 +362,7 @@ function Profile({ navigation }) {
             body={
               "Create your own unique UNIS profile that you can show to site managers and employers. Credentials ticked will be shared."
             }
-            link={"/"}
+            link={() => navigation.navigate("UpdateProfile")}
             buttonText={"Manage Your Profile"}
           />
         </View>
@@ -326,6 +383,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: 40,
     justifyContent: "center",
+    alignItems: "center",
   },
   bioContainer: {
     backgroundColor: COLORS.dark,

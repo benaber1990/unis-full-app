@@ -33,6 +33,7 @@ import AppContext from "../components/AppContext";
 import UnisLogo from "../components/UnisLogo";
 import HomeItemBox from "../miscComps/HomeItemBox";
 import TextCardComp from "../miscComps/TextCardComp";
+import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
 
 //FIREBASE CONFIG
 const firebaseConfig = {
@@ -55,12 +56,11 @@ function HomeScreen({ navigation }) {
   const [user, setUser] = useState(null);
   const navigationHndl = useNavigation();
   const [userId, setUserId] = useState();
+  const [hasNots, setHasNots] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
       if (authUser) {
-        // User is signed in.
-        // console.log("Yes", authUser.uid);
         setUser(authUser);
         setUserId(authUser.uid);
       } else {
@@ -74,7 +74,7 @@ function HomeScreen({ navigation }) {
   }, []);
 
   if (!user) {
-    navigationHndl.navigate("LogInScreen");
+    navigationHndl.navigate("InitLogin");
   }
 
   const [text, setText] = useState();
@@ -87,12 +87,11 @@ function HomeScreen({ navigation }) {
 
   const [userEmail, setUserEmail] = useState();
   const [jobTitle, setJobTitle] = useState();
+  const [firstName, setFirstName] = useState();
 
   const fetchData = async () => {
     try {
-      const collectionRef = firebase
-        .firestore()
-        .collection("yourCollectionName");
+      const collectionRef = firebase.firestore().collection("users");
       const snapshot = await collectionRef.get();
       const fetchedData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -100,9 +99,10 @@ function HomeScreen({ navigation }) {
       }));
       setData(fetchedData);
       console.log(data);
-      setJobTitle(data[1].jobTitle);
-      console.log(data[1].jobTitle);
-      // console.log(data);
+      setJobTitle(data[0].jobTitle);
+      setFirstName(data[0].firstName);
+      console.log("Job Title:", data[0].jobTitle);
+      // // console.log(data);
     } catch (error) {
       console.error("Error fetching dataaaa:", error);
     }
@@ -111,6 +111,13 @@ function HomeScreen({ navigation }) {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const NUMNOTS = NOTIFICATIONS_DATA.length;
+
+  useEffect(() => {
+    NUMNOTS > 0 ? setHasNots(true) : setHasNots(false);
+  }),
+    [];
 
   const [testData, setTestData] = useState("");
 
@@ -172,14 +179,38 @@ function HomeScreen({ navigation }) {
       >
         <UnisLogo height={75} width={75} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Pressable onPress={() => navigation.navigate("Notifications")}>
-            <Ionicons
-              name="notifications"
-              size={32}
-              color={COLORS.mainGreen}
-              style={{ marginRight: 10 }}
-            />
-          </Pressable>
+          {!hasNots ? (
+            <Pressable onPress={() => navigation.navigate("Notifications")}>
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.lightGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => navigation.navigate("Notifications")}
+              style={{ alignItems: "center" }}
+            >
+              <View
+                style={{
+                  height: 6,
+                  width: 6,
+                  borderRadius: 3,
+                  backgroundColor: "red",
+                  marginRight: 10,
+                  marginBottom: 1,
+                }}
+              />
+              <Ionicons
+                name="notifications"
+                size={30}
+                color={COLORS.mainGreen}
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          )}
           <Pressable onPress={() => navigation.navigate("Profile")}>
             <Image
               source={{
@@ -206,7 +237,7 @@ function HomeScreen({ navigation }) {
         }}
       >
         <Text style={{ color: "white", fontSize: 22, fontWeight: "700" }}>
-          Welcome, username! {jobTitle}
+          Welcome, {firstName}
         </Text>
       </View>
 
@@ -296,10 +327,15 @@ function HomeScreen({ navigation }) {
           ListHeaderComponent={() => <View style={{ marginLeft: 20 }} />}
         />
         {/* Home 3 Items  */}
-        <View
+        <Pressable
+          onPress={() => navigation.navigate("QR")}
           style={{ flexDirection: "row", alignSelf: "center", marginTop: 5 }}
         >
-          <HomeItemBox title="Certs" iconName="md-documents-outline" />
+          <HomeItemBox
+            title="Certs"
+            iconName="md-documents-outline"
+            link={() => navigation.navigate("AllDocuments")}
+          />
           <View
             style={{
               alignItems: "center",
@@ -322,8 +358,12 @@ function HomeScreen({ navigation }) {
               Share Profile
             </Text>
           </View>
-          <HomeItemBox title="Cards" iconName="ios-card-outline" />
-        </View>
+          <HomeItemBox
+            title="Cards"
+            iconName="ios-card-outline"
+            link={() => navigation.navigate("AllCards")}
+          />
+        </Pressable>
         {/* Text Card 1 */}
         <TextCardComp
           backCol={COLORS.lightGreen}
@@ -331,7 +371,7 @@ function HomeScreen({ navigation }) {
           body={
             "Your UNIS profiles gives site managers instant access to your info - so you can always provide your eligibility to work"
           }
-          link={"/"}
+          link={() => navigation.navigate("ContactScreen")}
           buttonText={"Update Now"}
         />
 
@@ -352,7 +392,7 @@ function HomeScreen({ navigation }) {
           body={
             "Find out how the UNIS app seemlessly integrates with the UNIS Website Portal to help you power your construction projects"
           }
-          link={"/"}
+          link={() => navigation.navigate("ContactScreen")}
           buttonText={"Book a Demo"}
           titleColor={"white"}
           bodyColor={"white"}
@@ -391,7 +431,7 @@ const styles = StyleSheet.create({
   homeCardContainer: {
     alignSelf: "center",
     flexDirection: "row",
-    borderRadius: 8,
+    borderRadius: 12,
     backgroundColor: COLORS.black,
   },
   textInputStyle: {

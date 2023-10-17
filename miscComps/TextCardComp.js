@@ -25,7 +25,7 @@ export default function TextCardComp({
       <Text style={{ fontWeight: "700", color: titleColor }}>{title}</Text>
       <Text style={{ color: bodyColor, fontSize: 12 }}>{body}</Text>
 
-      <Pressable style={styles.buttonStyle}>
+      <Pressable onPress={link} style={styles.buttonStyle}>
         <Text style={styles.buttonTextStyle}>{buttonText}</Text>
       </Pressable>
     </View>

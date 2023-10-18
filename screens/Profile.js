@@ -327,6 +327,16 @@ function Profile({ navigation }) {
               link={() => navigation.navigate("HealthScreen")}
             />
           </View>
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
+            <ProfIcon
+              title="Inductions"
+              link={() => navigation.navigate("InductionsScreen")}
+            />
+            <ProfIcon
+              title="Permits"
+              link={() => navigation.navigate("PermitsScreen")}
+            />
+          </View>
         </View>
 
         {/* Certificates */}

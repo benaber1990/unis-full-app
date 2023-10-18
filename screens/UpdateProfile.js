@@ -124,15 +124,16 @@ function UpdateProfile({ navigation }) {
             horizontal
           />
         </View>
+
         {/* Submit & Save */}
         <View style={{ alignItems: "center" }}>
           <Pressable
             style={{
-              backgroundColor: COLORS.yellow,
-              paddingHorizontal: 10,
-              paddingVertical: 8,
+              backgroundColor: COLORS.mainGreen,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
               borderRadius: 4,
-              marginBottom: 20,
+              marginBottom: 40,
             }}
           >
             <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -141,13 +142,13 @@ function UpdateProfile({ navigation }) {
           </Pressable>
         </View>
 
-        {/* Password Reset */}
+        {/* Password Reset
         <Pressable
           onPress={() => navigation.navigate("PasswordReset")}
           style={{ marginBottom: 40 }}
         >
           <Text>Need to reset your password? Click here</Text>
-        </Pressable>
+        </Pressable> */}
       </ScrollView>
     </View>
   );

@@ -10,6 +10,8 @@ import {
 import { StatusBar } from "expo-status-bar";
 import COLORS from "../misc/COLORS";
 
+const thisArray = ["a", "b", "c", 1, true];
+
 function EnterScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.screenStyle}>

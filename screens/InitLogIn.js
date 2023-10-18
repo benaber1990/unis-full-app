@@ -192,16 +192,19 @@ function InitLogIn({ navigation }) {
       />
 
       {/* Lost Password */}
-      <View>
+      <Pressable
+        onPress={() => navigation.navigate("PasswordReset")}
+        style={{ paddingBottom: 10 }}
+      >
         <Text style={{ color: "lightgrey" }}>
           Lost password? Click here to reset
         </Text>
-      </View>
+      </Pressable>
 
       {/* Create Account Link */}
       <Pressable
         onPress={() => navigation.navigate("CreateAccount")}
-        style={{ marginTop: 40, alignSelf: "center" }}
+        style={{ marginTop: 30, alignSelf: "center" }}
       >
         <Text style={{ color: "white", textAlign: "center", fontSize: 16 }}>
           New to{" "}
@@ -252,7 +255,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey,
     borderRadius: 4,
     fontSize: 16,
-    color: "white"
+    color: "white",
   },
   button: {
     backgroundColor: COLORS.mainGreen,

@@ -10,8 +10,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import COLORS from "../misc/COLORS";
 import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
-import { Entypo } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
 function NotificationsScreen({ navigation }) {
   const Item = ({ alertTitle, alertCat }) => (
@@ -74,7 +73,7 @@ function NotificationsScreen({ navigation }) {
             color: "white",
             fontWeight: "500",
             fontSize: 12,
-            marginLeft: 5,
+            marginLeft: 10,
             marginTop: 10,
           }}
         >
@@ -108,6 +107,30 @@ function NotificationsScreen({ navigation }) {
             >
               My Notifications
             </Text>
+          </View>
+        )}
+        ListFooterComponent={() => (
+          <View>
+            <Pressable
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 10,
+                borderRadius: 6,
+                alignSelf: "center",
+                backgroundColor: COLORS.lightGreen,
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 20,
+              }}
+            >
+              <MaterialCommunityIcons
+                name="eraser-variant"
+                size={24}
+                color="black"
+                style={{ marginRight: 5 }}
+              />
+              <Text style={{ fontWeight: "700" }}>Clear All Notifications</Text>
+            </Pressable>
           </View>
         )}
       />

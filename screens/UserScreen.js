@@ -19,14 +19,61 @@ import * as ImagePicker from "expo-image-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import firebase from "firebase/compat";
 import "firebase/compat/database";
+import { useIsFocused } from "@react-navigation/native";
+
 import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextCardComp from "../miscComps/TextCardComp";
+
+//FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyChtonwBnG-Jzs-gMJRbTChiv-mwt13rNY",
+  authDomain: "unis-1.firebaseapp.com",
+  projectId: "unis-1",
+  storageBucket: "unis-1.appspot.com",
+  messagingSenderId: "500039576121",
+  appId: "1:500039576121:web:af595bd3bc72422d4fbbe8",
+  measurementId: "G-HY5WS3ZXYD",
+};
+
+//FIREBASE APP
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 function UserScreen({ navigation }) {
   const storage = getStorage();
   const [url, setUrl] = useState();
   const [hasNots, setHasNots] = useState(false);
+  const [data, setData] = useState([]);
+
+  // Collect user data from Firebase - for Userdata
+  const isFocused = useIsFocused();
+  const fetchData = async () => {
+    try {
+      const { uid } = firebase.auth().currentUser;
+      if (!uid) return;
+      const collectionRef = firebase.firestore().collection("users").doc(uid);
+      const snapshot = await collectionRef.get();
+      console.log("snapshotdata", snapshot?.data());
+      // const fetchedData = snapshot.docs.map((doc) => ({
+      //   id: doc.id,
+      //   ...doc.data(),
+      // }));
+      console.log("fetchedData", snapshot?.data());
+      setData(snapshot?.data());
+      // console.log("Hello");
+      // console.log(data);
+      // console.log(data[0].firstName);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [isFocused]);
 
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
@@ -216,7 +263,7 @@ function UserScreen({ navigation }) {
 
         {/* Get Support Button*/}
         <Pressable
-          onPress={() => navigation.navigate("Support")}
+          onPress={() => navigation.navigate("ContactScreen")}
           style={styles.buttonStyle}
         >
           <Entypo
@@ -246,7 +293,7 @@ function UserScreen({ navigation }) {
           </Text>
         </Pressable>
 
-        <Pressable
+        {/* <Pressable
           onPress={showImagePicker}
           style={[styles.buttonStyle, { backgroundColor: COLORS.grey }]}
         >
@@ -262,7 +309,7 @@ function UserScreen({ navigation }) {
           <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
             upload images
           </Text>
-        </Pressable>
+        </Pressable> */}
 
         {/* Test Firebase Button */}
         {/* <Pressable
@@ -273,7 +320,7 @@ function UserScreen({ navigation }) {
       </Pressable> */}
 
         {/* Content FlatList */}
-        <View style={{ height: 200 }}>
+        <View style={{ height: 200, marginTop: 40 }}>
           <FlatList
             data={LATEST_NEWS_DATA}
             renderItem={renderItem}
@@ -289,6 +336,7 @@ function UserScreen({ navigation }) {
             backgroundColor: COLORS.black,
             // paddingBottom: 300,
             marginTop: 40,
+            paddingBottom: 60,
             flexDirection: "row",
           }}
         >

@@ -1,23 +1,32 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import firebase from "firebase/compat";
 import "firebase/compat/database";
+
 export const fetchAllImages = (uid) => {
   let imgData = [];
   firebase
     .firestore()
-    .collection("users")
+    .collection("cards")
+    // .doc(uid)
     .doc(uid)
     .get()
     .then((querySnapshot) => {
       console.log("Total users: ", querySnapshot.data());
       imgData.push(querySnapshot.data());
+      console.log("New img data:", imgData);
       // querySnapshot.forEach((documentSnapshot) => {
       //   console.log("User ID: ", documentSnapshot.id, documentSnapshot.data());
       //   imgData.push(documentSnapshot.data());
+      //   console.log("IMAGE DATA:", imgData);
       // });
     });
   return imgData;
 };
+
+// Upload Image Coding Below -------
+
+// Comment here
+
 export const uploadImage = async (data, imageName, colName, title) => {
   const storage = getStorage();
   try {
@@ -40,9 +49,9 @@ export const uploadImage = async (data, imageName, colName, title) => {
         const { uid } = firebase.auth().currentUser;
         firebase
           .firestore()
-          .collection("Images")
+          .collection("cards")
           .doc(uid)
-          .collection(colName)
+          .collection("cards")
           .add(
             {
               imageUrl: res,
@@ -53,6 +62,7 @@ export const uploadImage = async (data, imageName, colName, title) => {
           )
           .then((res) => {
             alert("Certificate uploaded Successfully");
+            console.log(uid);
           })
           .catch((err) => {
             console.log("err", err);

@@ -13,11 +13,13 @@ import * as ImagePicker from "expo-image-picker";
 import COLORS from "../misc/COLORS";
 import YellowButton from "../components/YellowButton";
 import { uploadImage } from "./helpers/helpers";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function AddNewDocument() {
   const [image, setImage] = useState(null);
   const [newUrl, setNewUrl] = useState("Hello");
   const [title, setTitle] = useState("");
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,13 +40,32 @@ export default function AddNewDocument() {
 
   return (
     <View style={styles.screenStyle}>
+      <Pressable onPress={pickImage} style={{}}>
+        <MaterialCommunityIcons
+          name="upload-lock"
+          size={72}
+          color={COLORS.mainGreen}
+        />
+      </Pressable>
+
       <View style={{ alignSelf: "center", padding: 20, marginBottom: 40 }}>
         <Text style={{ color: "white", fontSize: 24, fontWeight: "500" }}>
           Upload New Certificate
         </Text>
       </View>
 
-      <YellowButton onPress={pickImage} title="Select File" />
+      <Pressable
+        onPress={pickImage}
+        style={{
+          padding: 20,
+          backgroundColor: COLORS.lightGreen,
+          borderRadius: 6,
+        }}
+      >
+        <Text style={{ fontSize: 16, fontWeight: "700" }}>
+          Select Your File
+        </Text>
+      </Pressable>
 
       {image && (
         <View style={{ alignItems: "center", marginTop: 30 }}>

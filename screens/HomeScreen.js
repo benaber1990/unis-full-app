@@ -54,8 +54,8 @@ if (!firebase.apps.length) {
 
 function HomeScreen({ navigation }) {
   const [user, setUser] = useState(null);
-  const navigationHndl = useNavigation();
   const [userId, setUserId] = useState();
+  const navigationHndl = useNavigation();
   const [hasNots, setHasNots] = useState(false);
 
   useEffect(() => {

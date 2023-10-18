@@ -7,11 +7,7 @@ function GenerateQR() {
   const testUserId = "12efwefwef";
   const QRLink = `https.google.com${testUserId}`;
 
-  return (
-    <View style={styles.screenStyle}>
-      <QRCode value="1233r34534" />
-    </View>
-  );
+  return <View></View>;
 }
 
 const styles = StyleSheet.create({

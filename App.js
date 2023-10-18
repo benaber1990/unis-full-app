@@ -58,6 +58,11 @@ import ConfirmLogOut from "./screens/ConfirmLogOut";
 import DrawingsScreen from "./screens/DrawingsScreen";
 import DrawingDisplay from "./screens/DrawingDisplay";
 import HealthScreen from "./screens/HealthScreen";
+import InductionsScreen from "./screens/InductionsScreen";
+import PermitsScreen from "./screens/PermitsScreen";
+import InductionDisplay from "./screens/InductionDisplay";
+import PermitDisplay from "./screens/PermitDisplay";
+import PermitSingle from "./screens/PermitSingle";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -175,7 +180,7 @@ function App() {
         <Stack.Screen name="ViewMyCards" component={ViewMyCards} />
         <Stack.Screen name="ContentDisplay" component={ContentDisplay} />
         <Stack.Screen name="EnterScreen" component={EnterScreen} />
-        <Stack.Screen name="AddNewDoc" component={AddNewDocument} />
+        <Stack.Screen name="AddNewDocument" component={AddNewDocument} />
         <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
         <Stack.Screen name="GenerateQR" component={GenerateQR} />
         <Stack.Screen name="CreateProfile" component={CreateProfile} />
@@ -202,6 +207,11 @@ function App() {
         <Stack.Screen name="DrawingsScreen" component={DrawingsScreen} />
         <Stack.Screen name="DrawingDisplay" component={DrawingDisplay} />
         <Stack.Screen name="HealthScreen" component={HealthScreen} />
+        <Stack.Screen name="InductionsScreen" component={InductionsScreen} />
+        <Stack.Screen name="PermitsScreen" component={PermitsScreen} />
+        <Stack.Screen name="InductionDisplay" component={InductionDisplay} />
+        <Stack.Screen name="PermitDisplay" component={PermitDisplay} />
+        <Stack.Screen name="PermitSingle" component={PermitSingle} />
         <Stack.Screen
           name="HealthSafetyScreen"
           component={HealthSafetyScreen}

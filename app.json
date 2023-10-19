@@ -2,7 +2,7 @@
   "expo": {
     "name": "btg-new-rn-app",
     "slug": "btg-new-rn-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "plugins": [
@@ -25,6 +25,7 @@
       "supportsTablet": true,
       "simulator": true,
       "bundleIdentifier": "com.bilalwarind.btgnewrnapp",
+      "buildNumber": "1.0.1",
       "development": {
         "developmentClient": true,
         "distribution": "internal"
@@ -44,7 +45,9 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "eas": {}
+      "eas": {
+        "projectId": "d9b7ed88-a21d-4578-9a39-6e6d2493b72b"
+      }
     }
   }
 }

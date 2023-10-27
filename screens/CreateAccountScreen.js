@@ -6,10 +6,12 @@ import {
   TextInput,
   Pressable,
   Image,
+  Keyboard,
 } from "react-native";
 import COLORS from "../misc/COLORS";
 import firebase from "firebase/compat";
 import { useNavigation } from "@react-navigation/native";
+import Checkbox from "expo-checkbox";
 
 // import firebase from "firebase/compat/app";
 import "firebase/compat/database";
@@ -36,6 +38,8 @@ if (!firebase.apps.length) {
 function CreateAccountScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isChecked, setChecked] = useState(false);
+  const [passError, setPassError] = useState(false);
 
   const navigationHndl = useNavigation();
 
@@ -53,11 +57,12 @@ function CreateAccountScreen({ navigation }) {
       .catch((error) => {
         // Handle registration errors
         console.error("Registration error:", error);
+        setPassError(true);
       });
   };
 
   return (
-    <View style={styles.screenStyle}>
+    <Pressable onPress={Keyboard.dismiss} style={styles.screenStyle}>
       {/* Logo */}
       <View style={{ marginBottom: 40 }}>
         <UnisLogo height={200} width={200} />
@@ -89,13 +94,26 @@ function CreateAccountScreen({ navigation }) {
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
-          placeholder="Enter a Secure Password"
+          placeholder="Password. Min 8 Characters"
           placeholderTextColor={"lightgrey"}
         />
       </View>
 
       {/* GDPR Checkbox */}
-      <View style={{ marginHorizontal: 40, marginTop: 5 }}>
+      <View
+        style={{
+          marginHorizontal: 40,
+          marginTop: 5,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Checkbox
+          style={{ marginRight: 5 }}
+          value={isChecked}
+          onValueChange={setChecked}
+          color={isChecked ? COLORS.mainGreen : COLORS.lightGreen}
+        />
         <Text style={{ color: "white" }}>
           By signing up to use UNIS, I accept the T&C's as{" "}
           <Text
@@ -112,7 +130,16 @@ function CreateAccountScreen({ navigation }) {
       <Pressable onPress={handleRegistration} style={styles.button}>
         <Text style={{ fontSize: 18, fontWeight: "600" }}>Submit</Text>
       </Pressable>
-    </View>
+      {passError && (
+        <View style={{ marginHorizontal: 60, marginTop: 10 }}>
+          <Text style={{ textAlign: "center", color: "white", fontSize: 12 }}>
+            Invalid Create Account Attempt. Please ensure you are using your
+            correct email address. Password must be at least 8 characters,
+            include at least 1 capital letter and symbol
+          </Text>
+        </View>
+      )}
+    </Pressable>
   );
 }
 

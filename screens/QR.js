@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Pressable, Share } from "react-native";
 import COLORS from "../misc/COLORS";
-import EX_USER_DATA from "../misc/EX_USER_DATA";
+
 import QRCode from "react-native-qrcode-svg";
 import firebase from "firebase/compat";
 import { Entypo } from "@expo/vector-icons";
@@ -9,6 +9,7 @@ import { Entypo } from "@expo/vector-icons";
 // import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import "firebase/auth";
+import UnisLogo from "../components/UnisLogo";
 
 //FIREBASE CONFIG
 const firebaseConfig = {
@@ -28,22 +29,44 @@ if (!firebase.apps.length) {
 }
 
 function QRScreen({ navigation }) {
-  const [data, setData] = useState("");
-
-  // const [firstName, setFirstName] = useState("");
-
-  const fetchData = async () => {
-    try {
-      const { uid } = firebase.auth().currentUser;
-      setData(uid);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const [data, setData] = useState();
+  const [qrCode, setQRCode] = useState("123");
 
   useEffect(() => {
-    fetchData();
+    const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
+      if (authUser) {
+        console.log("Yes!");
+        setData(authUser);
+        console.log(data?.uid.length);
+      } else {
+        // User is signed out.
+        console.log("No");
+      }
+    });
+
+    // Clean up the listener when the component unmounts.
+    return unsubscribe;
   }, []);
+
+  // Share By
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "UNIS.One || This is my UNIS Profile",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
 
   return (
     <View style={styles.screenStyle}>
@@ -68,9 +91,17 @@ function QRScreen({ navigation }) {
       </Text>
 
       <View style={{ marginTop: 30 }} />
-      <View style={styles.cardStyle}>
-        <QRCode value="xyz" size={250} />
-      </View>
+
+      {/* QR Code */}
+      {data?.uid.length > 1 && (
+        <View style={styles.cardStyle}>
+          <QRCode
+            value={data?.uid}
+            size={250}
+            backgroundColor={COLORS.mainGreen}
+          />
+        </View>
+      )}
       <Text style={{ color: "white", marginTop: 10, fontWeight: "500" }}>
         Your Unique Unis QR
       </Text>
@@ -78,7 +109,7 @@ function QRScreen({ navigation }) {
       {/* Share Profile Button */}
 
       <Pressable
-        onPress={() => navigation.navigate("ScanQR")}
+        onPress={onShare}
         style={{
           padding: 20,
           marginTop: 20,
@@ -99,8 +130,15 @@ function QRScreen({ navigation }) {
       </Pressable>
 
       <View style={{ marginTop: 60 }}>
-        <Text style={{ color: "white", fontWeight: "600" }}>
-          You can display your QR to employers to share your profile
+        <Text
+          style={{
+            color: "white",
+            fontWeight: "600",
+            textAlign: "center",
+            marginHorizontal: 40,
+          }}
+        >
+          You can display your QR to employers to share your profile QR Code
         </Text>
       </View>
     </View>

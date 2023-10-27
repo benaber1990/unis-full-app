@@ -42,60 +42,51 @@ const firebaseConfig = {
 };
 
 //FIREBASE APP
-
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const TitleSection = ({ title }) => (
-  <View>
-    <Text
-      style={{
-        color: "white",
-        fontSize: 20,
-        fontWeight: "600",
-        marginLeft: 20,
-        // marginBottom: 10,
-      }}
-    >
-      {title}
-    </Text>
-  </View>
-);
-
 function Profile({ navigation }) {
   const [data, setData] = useState("");
-  const isFocused = useIsFocused();
   const { uid } = firebase.auth().currentUser;
   const [certificates, setCertificates] = useState([]);
   const [jobTitle, setJobTitle] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [surname, setSurname] = useState(null);
   const [hasNots, setHasNots] = useState(false);
+  const [bio, setBio] = useState("");
+
+  // Fetch User Data
+  const isFocused = useIsFocused();
 
   const fetchData = async () => {
-    console.log("uid", uid);
     try {
+      const { uid } = firebase.auth().currentUser;
       if (!uid) return;
       const collectionRef = firebase.firestore().collection("users").doc(uid);
       const snapshot = await collectionRef.get();
-      console.log("snapshotdata", snapshot?.data());
+      // console.log("snapshotdata", snapshot?.data());
       // const fetchedData = snapshot.docs.map((doc) => ({
       //   id: doc.id,
       //   ...doc.data(),
       // }));
-      console.log("fetchedData", snapshot?.data());
+      // console.log("fetchedData", snapshot?.data());
+
       setData(snapshot?.data());
+      console.log(data.firstName);
       // console.log("Hello");
       // console.log(data);
-      console.log(data.jobTitle);
-      setJobTitle(data.jobTitle);
-      setFirstName(data.firstName);
-      setSurname(data.surname);
+      // console.log(data[0].firstName);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [isFocused]);
+
+  // Fetch Images
   const fetchCertificateImages = (uid, colname) => {
     let imgData = [];
     firebase
@@ -238,10 +229,10 @@ function Profile({ navigation }) {
                 marginLeft: 20,
               }}
             >
-              {firstName} {surname}
+              {data?.firstName}
             </Text>
             <Text style={{ color: "lightgrey", marginLeft: 20 }}>
-              {jobTitle}
+              {data?.jobTitle}
             </Text>
           </View>
           {!hasNots ? (
@@ -285,13 +276,20 @@ function Profile({ navigation }) {
           >
             Bio
           </Text>
-          <Text style={{ color: "white", fontSize: 12 }}>
-            Dedicated construction worker with a passion for building and a
-            strong commitment to safety and teamwork. With a proven track record
-            of efficiently completing projects and a keen attention to detail, I
-            strive to contribute my skills to create structures that stand the
-            test of time
-          </Text>
+          {bio.length > 0 ? (
+            <View>
+              <Text style={{ color: "white" }}>Hello</Text>
+            </View>
+          ) : (
+            <Pressable
+              onPress={() => navigation.navigate("CreateBio")}
+              style={{ padding: 10 }}
+            >
+              <Text style={{ color: "white" }}>
+                Click here to create your bio
+              </Text>
+            </Pressable>
+          )}
         </View>
 
         {/* My Cards */}
@@ -396,7 +394,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bioContainer: {
-    backgroundColor: COLORS.dark,
+    backgroundColor: COLORS.grey,
     alignSelf: "center",
     paddingHorizontal: 50,
     paddingVertical: 20,
@@ -404,6 +402,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     marginHorizontal: 20,
+    width: 300,
   },
   item1Style: {
     marginRight: 30,

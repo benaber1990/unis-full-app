@@ -63,6 +63,8 @@ import PermitsScreen from "./screens/PermitsScreen";
 import InductionDisplay from "./screens/InductionDisplay";
 import PermitDisplay from "./screens/PermitDisplay";
 import PermitSingle from "./screens/PermitSingle";
+import TestUploadScreen from "./screens/TestUploadScreen";
+import CreateBio from "./screens/CreateBio";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -212,6 +214,8 @@ function App() {
         <Stack.Screen name="InductionDisplay" component={InductionDisplay} />
         <Stack.Screen name="PermitDisplay" component={PermitDisplay} />
         <Stack.Screen name="PermitSingle" component={PermitSingle} />
+        <Stack.Screen name="TestUpload" component={TestUploadScreen} />
+        <Stack.Screen name="CreateBio" component={CreateBio} />
         <Stack.Screen
           name="HealthSafetyScreen"
           component={HealthSafetyScreen}

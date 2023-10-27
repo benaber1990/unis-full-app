@@ -15,6 +15,7 @@ import {
   SafeAreaView,
   Pressable,
   ScrollView,
+  Keyboard,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Foundation } from "@expo/vector-icons";
@@ -34,6 +35,7 @@ import UnisLogo from "../components/UnisLogo";
 import HomeItemBox from "../miscComps/HomeItemBox";
 import TextCardComp from "../miscComps/TextCardComp";
 import NOTIFICATIONS_DATA from "../misc/NOTIFICATIONS_DATA";
+import { useIsFocused } from "@react-navigation/native";
 
 //FIREBASE CONFIG
 const firebaseConfig = {
@@ -58,11 +60,13 @@ function HomeScreen({ navigation }) {
   const navigationHndl = useNavigation();
   const [hasNots, setHasNots] = useState(false);
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
       if (authUser) {
         setUser(authUser);
-        setUserId(authUser.uid);
+        setUserId(authUser?.uid);
       } else {
         // User is signed out.
         setUser(null);
@@ -91,26 +95,30 @@ function HomeScreen({ navigation }) {
 
   const fetchData = async () => {
     try {
-      const collectionRef = firebase.firestore().collection("users");
+      const { uid } = firebase.auth().currentUser;
+      if (!uid) return;
+      const collectionRef = firebase.firestore().collection("users").doc(uid);
       const snapshot = await collectionRef.get();
-      const fetchedData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setData(fetchedData);
-      console.log(data);
-      setJobTitle(data[0].jobTitle);
-      setFirstName(data[0].firstName);
-      console.log("Job Title:", data[0].jobTitle);
-      // // console.log(data);
+      // console.log("snapshotdata", snapshot?.data());
+      // const fetchedData = snapshot.docs.map((doc) => ({
+      //   id: doc.id,
+      //   ...doc.data(),
+      // }));
+      // console.log("fetchedData", snapshot?.data());
+
+      setData(snapshot?.data());
+      console.log(data.firstName);
+      // console.log("Hello");
+      // console.log(data);
+      // console.log(data[0].firstName);
     } catch (error) {
-      console.error("Error fetching dataaaa:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [isFocused]);
 
   const NUMNOTS = NOTIFICATIONS_DATA.length;
 
@@ -165,7 +173,7 @@ function HomeScreen({ navigation }) {
   // }
 
   return (
-    <View style={styles.screenStyle}>
+    <Pressable onPress={Keyboard.dismiss} style={styles.screenStyle}>
       <StatusBar style="dark" />
 
       {/* Header Section */}
@@ -177,7 +185,9 @@ function HomeScreen({ navigation }) {
           marginHorizontal: 30,
         }}
       >
-        <UnisLogo height={75} width={75} />
+        <Pressable onPress={() => navigation.navigate("TestUpload")}>
+          <UnisLogo height={75} width={75} />
+        </Pressable>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {!hasNots ? (
             <Pressable onPress={() => navigation.navigate("Notifications")}>
@@ -237,53 +247,52 @@ function HomeScreen({ navigation }) {
         }}
       >
         <Text style={{ color: "white", fontSize: 22, fontWeight: "700" }}>
-          Welcome, {firstName}
-        </Text>
-      </View>
-
-      {/* Search Box Label */}
-      <View>
-        <Text
-          style={{
-            color: "white",
-            textAlign: "center",
-            marginBottom: 5,
-            // fontSize: 12,
-          }}
-        >
-          Search the{" "}
-          <Text style={{ color: COLORS.mainGreen, fontWeight: "600" }}>
-            Unisverse
-          </Text>
+          Welcome, {data?.firstName}
         </Text>
       </View>
 
       {/* Search Box */}
-
-      <View
-        style={{ flexDirection: "row", alignSelf: "center", marginBottom: 5 }}
-      >
-        <TextInput
-          placeholder="Enter Your Search Here"
-          placeholderTextColor={"lightgrey"}
-          style={styles.textInputStyle}
-          value={text}
-          onChangeText={setText}
-        />
-        <View
-          style={{
-            justifyContent: "center",
-            backgroundColor: COLORS.grey,
-            paddingRight: 15,
-            marginLeft: -3,
-            borderTopRightRadius: 12,
-            borderBottomRightRadius: 12,
-          }}
-        >
-          <Ionicons name="globe-outline" size={28} color={COLORS.mainGreen} />
-        </View>
-      </View>
       <ScrollView>
+        {/* Search Box Label */}
+        <View>
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              marginBottom: 5,
+              // fontSize: 12,
+            }}
+          >
+            Search the{" "}
+            <Text style={{ color: COLORS.mainGreen, fontWeight: "600" }}>
+              Unisverse
+            </Text>
+          </Text>
+        </View>
+        <View
+          style={{ flexDirection: "row", alignSelf: "center", marginBottom: 5 }}
+        >
+          <TextInput
+            placeholder="Enter Your Search Here"
+            placeholderTextColor={"lightgrey"}
+            style={styles.textInputStyle}
+            value={text}
+            onChangeText={setText}
+          />
+          <View
+            style={{
+              justifyContent: "center",
+              backgroundColor: COLORS.grey,
+              paddingRight: 15,
+              marginLeft: -3,
+              borderTopRightRadius: 12,
+              borderBottomRightRadius: 12,
+            }}
+          >
+            <Ionicons name="globe-outline" size={28} color={COLORS.mainGreen} />
+          </View>
+        </View>
+
         {/* Home 4 Tiles */}
 
         <View
@@ -331,11 +340,11 @@ function HomeScreen({ navigation }) {
           onPress={() => navigation.navigate("QR")}
           style={{ flexDirection: "row", alignSelf: "center", marginTop: 5 }}
         >
-          <HomeItemBox
+          {/* <HomeItemBox
             title="Certs"
             iconName="md-documents-outline"
             link={() => navigation.navigate("AllDocuments")}
-          />
+          /> */}
           <View
             style={{
               alignItems: "center",
@@ -358,11 +367,11 @@ function HomeScreen({ navigation }) {
               Share Profile
             </Text>
           </View>
-          <HomeItemBox
+          {/* <HomeItemBox
             title="Cards"
             iconName="ios-card-outline"
             link={() => navigation.navigate("AllCards")}
-          />
+          /> */}
         </Pressable>
         {/* Text Card 1 */}
         <TextCardComp
@@ -417,7 +426,7 @@ function HomeScreen({ navigation }) {
             <Text style={{ color: "white" }}>Click</Text>
           </Pressable> */}
       </ScrollView>
-    </View>
+    </Pressable>
   );
 }
 

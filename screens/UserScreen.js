@@ -48,21 +48,25 @@ function UserScreen({ navigation }) {
   const [hasNots, setHasNots] = useState(false);
   const [data, setData] = useState([]);
 
-  // Collect user data from Firebase - for Userdata
+  // Fetch Data
+  // Fetch User Data
   const isFocused = useIsFocused();
+
   const fetchData = async () => {
     try {
       const { uid } = firebase.auth().currentUser;
       if (!uid) return;
       const collectionRef = firebase.firestore().collection("users").doc(uid);
       const snapshot = await collectionRef.get();
-      console.log("snapshotdata", snapshot?.data());
+      // console.log("snapshotdata", snapshot?.data());
       // const fetchedData = snapshot.docs.map((doc) => ({
       //   id: doc.id,
       //   ...doc.data(),
       // }));
-      console.log("fetchedData", snapshot?.data());
+      // console.log("fetchedData", snapshot?.data());
+
       setData(snapshot?.data());
+      console.log(data.firstName);
       // console.log("Hello");
       // console.log(data);
       // console.log(data[0].firstName);
@@ -74,6 +78,33 @@ function UserScreen({ navigation }) {
   useEffect(() => {
     fetchData();
   }, [isFocused]);
+
+  // // Collect user data from Firebase - for Userdata
+  // const isFocused = useIsFocused();
+  // const fetchData = async () => {
+  //   try {
+  //     const { uid } = firebase.auth().currentUser;
+  //     if (!uid) return;
+  //     const collectionRef = firebase.firestore().collection("users").doc(uid);
+  //     const snapshot = await collectionRef.get();
+  //     console.log("snapshotdata", snapshot?.data());
+  //     // const fetchedData = snapshot.docs.map((doc) => ({
+  //     //   id: doc.id,
+  //     //   ...doc.data(),
+  //     // }));
+  //     console.log("fetchedData", snapshot?.data());
+  //     setData(snapshot?.data());
+  //     // console.log("Hello");
+  //     // console.log(data);
+  //     // console.log(data[0].firstName);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [isFocused]);
 
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
@@ -221,7 +252,7 @@ function UserScreen({ navigation }) {
                   fontWeight: "500",
                 }}
               >
-                Username Here
+                Hello, {data?.firstName}
               </Text>
             </View>
           </View>
@@ -354,6 +385,19 @@ function UserScreen({ navigation }) {
             style={{ marginLeft: 15 }}
           />
         </View>
+
+        {/* Reset Password */}
+        <Pressable
+          onPress={() => navigation.navigate("PasswordReset")}
+          style={{ alignItems: "center" }}
+        >
+          <Text style={{ color: "white", fontWeight: "300" }}>
+            Lost Password?{" "}
+            <Text style={{ textDecorationLine: "underline" }}>
+              Click here to reset
+            </Text>
+          </Text>
+        </Pressable>
 
         {/* Text Card */}
         <TextCardComp

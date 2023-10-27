@@ -49,7 +49,7 @@ export const uploadImage = async (data, imageName, colName, title) => {
         const { uid } = firebase.auth().currentUser;
         firebase
           .firestore()
-          .collection("cards")
+          .collection("TestData")
           .doc(uid)
           .collection("cards")
           .add(
